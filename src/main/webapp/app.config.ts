@@ -1,10 +1,10 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeuix/themes/aura';
 import { definePreset } from '@primeuix/themes';
+import Aura from '@primeuix/themes/aura';
+import { providePrimeNG } from 'primeng/config';
 
-import { routes } from './pages/app.routes';
+import { routes } from './app/app.routes';
 
 const Preset = definePreset(Aura, {
   semantic: {

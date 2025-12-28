@@ -1,0 +1,14 @@
+import { Component, inject } from '@angular/core';
+import { HeaderService } from '../../services/header';
+import { BackButton } from './back-button/back-button';
+import { ThemeToggle } from './theme-toggle/theme-toggle';
+
+@Component({
+  selector: 'app-header',
+  imports: [BackButton, ThemeToggle],
+  templateUrl: './header.html',
+  styleUrl: './header.scss',
+})
+export class Header {
+  protected headerService = inject(HeaderService);
+}

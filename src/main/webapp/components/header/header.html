@@ -1,0 +1,15 @@
+<header class="grid grid-cols-[1fr_auto_1fr] items-center px-4 py-2">
+  <div class="justify-self-start flex items-center">
+    @if (headerService.context() !== 'home') {
+    <app-back-button></app-back-button>
+    }
+  </div>
+
+  <h1 class="text-xl font-medium text-center">
+    {{ headerService.title() }}
+  </h1>
+
+  <div class="justify-self-end flex items-center">
+    <app-theme-toggle></app-theme-toggle>
+  </div>
+</header>
