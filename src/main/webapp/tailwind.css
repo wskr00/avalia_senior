@@ -1,2 +1,12 @@
 @import 'tailwindcss';
 @import 'tailwindcss-primeui';
+
+@custom-variant dark (&:where(.app-dark, .app-dark *));
+
+@layer base, primeng, components, utilities;
+
+@layer base {
+  html {
+    @apply transition-colors duration-300;
+  }
+}
