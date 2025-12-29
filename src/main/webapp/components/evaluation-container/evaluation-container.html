@@ -11,3 +11,8 @@
 
   <app-submit-button (onClick)="onSubmit()"></app-submit-button>
 </form>
+
+<app-evaluation-result
+  [(visible)]="showResult"
+  [result]="calculationResult"
+></app-evaluation-result>

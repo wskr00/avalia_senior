@@ -1,4 +1,4 @@
-<app-evaluation-container (finish)="handleFinish($event)">
+<app-evaluation-container [config]="LAWTON_CONFIG">
   <app-evaluation-section title="O(a) Sr(a) consegue usar o telefone?">
     <e-option label="Sem ajuda" [value]="0"></e-option>
     <e-option label="Com ajuda parcial" [value]="-1"></e-option>

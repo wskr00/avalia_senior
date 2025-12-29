@@ -3,7 +3,6 @@ import { EvaluationContainer } from '@/components/evaluation-container/evaluatio
 import { EvaluationOption } from '@/components/evaluation-container/evaluation-section/evaluation-option/evaluation-option';
 import { EvaluationSection } from '@/components/evaluation-container/evaluation-section/evaluation-section';
 import { HeaderService } from '@/services/header';
-import { EvaluationCalculatorService } from '@/services/evaluation-calculator';
 import { ScaleDefinition } from '@/interfaces/evaluation';
 
 @Component({
@@ -14,9 +13,8 @@ import { ScaleDefinition } from '@/interfaces/evaluation';
 })
 export class Lawton implements OnInit {
   private headerService = inject(HeaderService);
-  private evaluationCalculatorService = inject(EvaluationCalculatorService);
 
-  private readonly LAWTON_CONFIG: ScaleDefinition = {
+  protected readonly LAWTON_CONFIG: ScaleDefinition = {
     id: 'lawton',
     baseline: 27,
     ranges: [
@@ -30,13 +28,5 @@ export class Lawton implements OnInit {
 
   ngOnInit(): void {
     this.headerService.setTitle('Escala de Lawton');
-  }
-
-  handleFinish(data: any): void {
-    const result = this.evaluationCalculatorService.calculate(this.LAWTON_CONFIG, data.responses);
-
-    console.log('Resultado do Cálculo:', result);
-
-    // TODO: result
   }
 }
