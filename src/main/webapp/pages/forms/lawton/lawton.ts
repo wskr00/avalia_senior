@@ -1,8 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { HeaderService } from '@/services/header';
 import { EvaluationContainer } from '@/components/evaluation-container/evaluation-container';
-import { EvaluationSection } from '@/components/evaluation-container/evaluation-section/evaluation-section';
 import { EvaluationOption } from '@/components/evaluation-container/evaluation-section/evaluation-option/evaluation-option';
+import { EvaluationSection } from '@/components/evaluation-container/evaluation-section/evaluation-section';
+import { HeaderService } from '@/services/header';
+import { Component, OnInit, inject } from '@angular/core';
 
 @Component({
   selector: 'app-lawton',

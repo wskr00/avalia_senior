@@ -2,8 +2,8 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4" formGroupName="basicInfo">
     <div class="flex flex-col gap-2">
       <label for="doctorName" class="font-medium text-900">Nome do Médico</label>
-      <span class="p-input-icon-left w-full">
-        <i class="pi pi-user-edit"></i>
+      <p-iconField iconPosition="left">
+        <p-inputIcon class="pi pi-user-edit" />
         <input
           pInputText
           id="doctorName"
@@ -11,13 +11,13 @@
           placeholder="Dr(a). Exemplo"
           [fluid]="true"
         />
-      </span>
+      </p-iconField>
     </div>
 
     <div class="flex flex-col gap-2">
       <label for="patientName" class="font-medium text-900">Nome do Paciente</label>
-      <span class="p-input-icon-left w-full">
-        <i class="pi pi-user"></i>
+      <p-iconField iconPosition="left">
+        <p-inputIcon class="pi pi-user" />
         <input
           pInputText
           id="patientName"
@@ -25,7 +25,7 @@
           placeholder="Nome Completo"
           [fluid]="true"
         />
-      </span>
+      </p-iconField>
     </div>
 
     <div class="flex flex-col gap-2">

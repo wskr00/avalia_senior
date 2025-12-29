@@ -2,7 +2,7 @@
   <div [formGroup]="evaluationService.form">
     <div class="flex flex-col gap-3" formArrayName="responses">
       @for (option of optionsContent; track $index) {
-      <div class="flex align-items-center gap-2 mb-2">
+      <div class="flex items-center gap-2 mb-2">
         <p-radioButton
           [name]="'question-' + controlIndex"
           [value]="option.value"

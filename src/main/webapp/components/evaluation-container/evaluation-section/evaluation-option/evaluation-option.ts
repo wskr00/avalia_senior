@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'p-option',
+  selector: 'e-option',
   imports: [],
   templateUrl: './evaluation-option.html',
   styleUrl: './evaluation-option.scss',
