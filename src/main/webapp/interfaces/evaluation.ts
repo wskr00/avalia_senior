@@ -19,3 +19,8 @@ export interface ScaleDefinition {
   baseline: number;
   ranges: EvaluationRange[];
 }
+
+export interface EvaluationResult {
+  score: number;
+  interpretation: string;
+}

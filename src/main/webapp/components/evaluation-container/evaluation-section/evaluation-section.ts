@@ -4,6 +4,7 @@ import { CardModule } from 'primeng/card';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { EvaluationOption } from './evaluation-option/evaluation-option';
 import { EvaluationFormService } from '@/services/evaluation-form';
+import { EvaluationQuestion, QuestionOption } from '@/interfaces/evaluation';
 
 @Component({
   selector: 'app-evaluation-section',
@@ -11,7 +12,7 @@ import { EvaluationFormService } from '@/services/evaluation-form';
   templateUrl: './evaluation-section.html',
   styleUrl: './evaluation-section.scss',
 })
-export class EvaluationSection implements OnInit {
+export class EvaluationSection implements OnInit, EvaluationQuestion {
   @Input({ required: true }) title!: string;
 
   @ContentChildren(EvaluationOption) optionsContent!: QueryList<EvaluationOption>;
@@ -19,6 +20,10 @@ export class EvaluationSection implements OnInit {
   protected evaluationFormService = inject(EvaluationFormService);
 
   controlIndex!: number;
+
+  get options(): QuestionOption[] {
+    return this.optionsContent?.toArray() || [];
+  }
 
   ngOnInit(): void {
     const responsesArray = this.evaluationFormService.form.get('responses') as FormArray;

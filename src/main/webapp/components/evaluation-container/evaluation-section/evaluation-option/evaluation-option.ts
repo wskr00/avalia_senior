@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { QuestionOption } from '@/interfaces/evaluation';
 
 @Component({
   selector: 'e-option',
@@ -6,7 +7,7 @@ import { Component, Input } from '@angular/core';
   templateUrl: './evaluation-option.html',
   styleUrl: './evaluation-option.scss',
 })
-export class EvaluationOption {
+export class EvaluationOption implements QuestionOption {
   @Input({ required: true }) label!: string;
   @Input({ required: true }) value!: any;
 }
