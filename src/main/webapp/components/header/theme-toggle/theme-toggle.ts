@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Theme } from '../../../services/theme';
+import { ThemeService } from '../../../services/theme';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
@@ -9,5 +9,5 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './theme-toggle.scss',
 })
 export class ThemeToggle {
-  protected theme = inject(Theme);
+  protected themeService = inject(ThemeService);
 }

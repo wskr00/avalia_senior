@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { EvaluationService } from '@/services/evaluation';
+import { EvaluationFormService } from '@/services/evaluation-form';
 
 @Component({
   selector: 'app-submit-button',
@@ -9,7 +9,7 @@ import { EvaluationService } from '@/services/evaluation';
   styleUrl: './submit-button.scss',
 })
 export class SubmitButton {
-  protected evaluationService = inject(EvaluationService);
+  protected evaluationFormService = inject(EvaluationFormService);
 
   @Input() label: string = 'Finalizar';
   @Input() loading: boolean = false;

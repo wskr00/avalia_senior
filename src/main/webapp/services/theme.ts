@@ -4,7 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 @Injectable({
   providedIn: 'root',
 })
-export class Theme {
+export class ThemeService {
   private platformId = inject(PLATFORM_ID);
 
   isDarkMode = signal<boolean>(this.getInitialTheme());

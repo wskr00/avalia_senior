@@ -3,7 +3,7 @@ import { ReactiveFormsModule, FormArray, FormControl, Validators } from '@angula
 import { CardModule } from 'primeng/card';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { EvaluationOption } from './evaluation-option/evaluation-option';
-import { EvaluationService } from '@/services/evaluation';
+import { EvaluationFormService } from '@/services/evaluation-form';
 
 @Component({
   selector: 'app-evaluation-section',
@@ -16,12 +16,12 @@ export class EvaluationSection implements OnInit {
 
   @ContentChildren(EvaluationOption) optionsContent!: QueryList<EvaluationOption>;
 
-  protected evaluationService = inject(EvaluationService);
+  protected evaluationFormService = inject(EvaluationFormService);
 
   controlIndex!: number;
 
   ngOnInit(): void {
-    const responsesArray = this.evaluationService.form.get('responses') as FormArray;
+    const responsesArray = this.evaluationFormService.form.get('responses') as FormArray;
 
     if (responsesArray) {
       this.controlIndex = responsesArray.length;

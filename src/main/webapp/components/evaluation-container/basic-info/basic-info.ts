@@ -5,7 +5,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DatePickerModule } from 'primeng/datepicker';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { EvaluationService } from '@/services/evaluation';
+import { EvaluationFormService } from '@/services/evaluation-form';
 
 @Component({
   selector: 'app-basic-info',
@@ -21,5 +21,5 @@ import { EvaluationService } from '@/services/evaluation';
   styleUrl: './basic-info.scss',
 })
 export class BasicInfo {
-  protected evaluationService = inject(EvaluationService);
+  protected evaluationFormService = inject(EvaluationFormService);
 }
