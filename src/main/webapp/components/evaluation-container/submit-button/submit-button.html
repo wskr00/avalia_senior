@@ -1,0 +1,13 @@
+<div class="w-full mt-6">
+  <p-button
+    [label]="label"
+    [icon]="icon"
+    [loading]="loading"
+    [disabled]="disabled || evaluationService.form.invalid"
+    (onClick)="execute()"
+    [fluid]="true"
+    severity="primary"
+    size="large"
+  >
+  </p-button>
+</div>

@@ -1,0 +1,13 @@
+<form
+  [formGroup]="evaluationService.form"
+  (ngSubmit)="onSubmit()"
+  class="flex flex-col gap-6 p-4 max-w-4xl mx-auto w-full"
+>
+  <p-card class="shadow-sm border surface-border">
+    <app-basic-info></app-basic-info>
+  </p-card>
+
+  <ng-content></ng-content>
+
+  <app-submit-button></app-submit-button>
+</form>
