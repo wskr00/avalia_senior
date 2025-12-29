@@ -1,13 +1,14 @@
-import { Component, OnInit, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 
-import { BasicInfo } from './basic-info/basic-info';
-import { SubmitButton } from './submit-button/submit-button';
-import { EvaluationResult } from './evaluation-result/evaluation-result';
-import { EvaluationFormService } from '@/services/evaluation-form';
+import { EvaluationResult as IEvaluationResult, ScaleDefinition } from '@/interfaces/evaluation';
 import { EvaluationCalculatorService } from '@/services/evaluation-calculator';
-import { ScaleDefinition, EvaluationResult as IEvaluationResult } from '@/interfaces/evaluation';
+import { EvaluationFormService } from '@/services/evaluation-form';
+import { HeaderService } from '@/services/header';
+import { BasicInfo } from './basic-info/basic-info';
+import { EvaluationResult } from './evaluation-result/evaluation-result';
+import { SubmitButton } from './submit-button/submit-button';
 
 @Component({
   selector: 'app-evaluation-container',
@@ -19,14 +20,17 @@ import { ScaleDefinition, EvaluationResult as IEvaluationResult } from '@/interf
 export class EvaluationContainer implements OnInit {
   protected evaluationFormService = inject(EvaluationFormService);
   private calculatorService = inject(EvaluationCalculatorService);
+  private headerService = inject(HeaderService);
 
   @Input({ required: true }) config!: ScaleDefinition;
 
   protected showResult = false;
   protected calculationResult?: IEvaluationResult;
+  protected evaluationTitle = '';
 
   ngOnInit(): void {
     this.evaluationFormService.setScaleConfig(this.config);
+    this.evaluationTitle = this.headerService.title();
   }
 
   onSubmit(): void {

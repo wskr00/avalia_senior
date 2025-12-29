@@ -1,7 +1,11 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { DialogModule } from 'primeng/dialog';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { EvaluationResult as IEvaluationResult } from '@/interfaces/evaluation';
+import { DialogModule } from 'primeng/dialog';
+import {
+  EvaluationResult as IEvaluationResult,
+  ScaleDefinition,
+} from '../../../interfaces/evaluation';
+import { PdfGeneratorService } from '../../../services/pdf-generator';
 
 @Component({
   selector: 'app-evaluation-result',
@@ -12,15 +16,27 @@ import { EvaluationResult as IEvaluationResult } from '@/interfaces/evaluation';
 export class EvaluationResult {
   @Input() visible: boolean = false;
   @Input() result?: IEvaluationResult;
+  @Input() title: string = '';
+  @Input() formValues: any;
+  @Input() config?: ScaleDefinition;
 
   @Output() visibleChange = new EventEmitter<boolean>();
+
+  private pdfService = inject(PdfGeneratorService);
 
   close(): void {
     this.visible = false;
     this.visibleChange.emit(false);
   }
 
-  downloadPdf(): void {
-    // TODO: Geração de PDF
+  async downloadPdf(): Promise<void> {
+    if (this.result && this.config && this.formValues) {
+      await this.pdfService.generateEvaluationPdf(
+        this.title,
+        this.formValues,
+        this.result,
+        this.config
+      );
+    }
   }
 }
