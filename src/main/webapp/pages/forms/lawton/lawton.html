@@ -1,15 +1,61 @@
 <app-evaluation-container (finish)="handleFinish($event)">
-  <app-evaluation-section title="Capacidade de usar o telefone">
-    <e-option label="Usa por iniciativa própria" [value]="3"></e-option>
-    <e-option label="Atende apenas" [value]="2"></e-option>
-    <e-option label="Não usa" [value]="1"></e-option>
+  <app-evaluation-section title="O(a) Sr(a) consegue usar o telefone?">
+    <e-option label="Sem ajuda" [value]="0"></e-option>
+    <e-option label="Com ajuda parcial" [value]="-1"></e-option>
+    <e-option label="Não consegue" [value]="-2"></e-option>
   </app-evaluation-section>
 
-  <app-evaluation-section title="Fazer compras">
-    <e-option label="Faz tudo sozinho" [value]="3"></e-option>
-    <e-option label="Necessita de ajuda" [value]="2"></e-option>
-    <e-option label="Incapaz" [value]="1"></e-option>
+  <app-evaluation-section
+    title="O(a) Sr(a) consegue ir a locais distantes, usando algum transporte, sem necessidade de planejamentos especiais?"
+  >
+    <e-option label="Sem ajuda" [value]="0"></e-option>
+    <e-option label="Com ajuda parcial" [value]="-1"></e-option>
+    <e-option label="Não consegue" [value]="-2"></e-option>
+  </app-evaluation-section>
+
+  <app-evaluation-section title="O(a) Sr(a) consegue fazer compras?">
+    <e-option label="Sem ajuda" [value]="0"></e-option>
+    <e-option label="Com ajuda parcial" [value]="-1"></e-option>
+    <e-option label="Não consegue" [value]="-2"></e-option>
+  </app-evaluation-section>
+
+  <app-evaluation-section title="O(a) Sr(a) consegue preparar suas próprias refeições?">
+    <e-option label="Sem ajuda" [value]="0"></e-option>
+    <e-option label="Com ajuda parcial" [value]="-1"></e-option>
+    <e-option label="Não consegue" [value]="-2"></e-option>
+  </app-evaluation-section>
+
+  <app-evaluation-section title="O(a) Sr(a) consegue arrumar a casa?">
+    <e-option label="Sem ajuda" [value]="0"></e-option>
+    <e-option label="Com ajuda parcial" [value]="-1"></e-option>
+    <e-option label="Não consegue" [value]="-2"></e-option>
+  </app-evaluation-section>
+
+  <app-evaluation-section
+    title="O(a) Sr(a) consegue fazer trabalhos manuais domésticos, como pequenos reparos?"
+  >
+    <e-option label="Sem ajuda" [value]="0"></e-option>
+    <e-option label="Com ajuda parcial" [value]="-1"></e-option>
+    <e-option label="Não consegue" [value]="-2"></e-option>
+  </app-evaluation-section>
+
+  <app-evaluation-section title="O(a) Sr(a) consegue lavar e passar sua roupa?">
+    <e-option label="Sem ajuda" [value]="0"></e-option>
+    <e-option label="Com ajuda parcial" [value]="-1"></e-option>
+    <e-option label="Não consegue" [value]="-2"></e-option>
+  </app-evaluation-section>
+
+  <app-evaluation-section
+    title="O(a) Sr(a) consegue tomar seus remédios na dose e horários corretos?"
+  >
+    <e-option label="Sem ajuda" [value]="0"></e-option>
+    <e-option label="Com ajuda parcial" [value]="-1"></e-option>
+    <e-option label="Não consegue" [value]="-2"></e-option>
+  </app-evaluation-section>
+
+  <app-evaluation-section title="O(a) Sr(a) consegue cuidar de suas finanças?">
+    <e-option label="Sem ajuda" [value]="0"></e-option>
+    <e-option label="Com ajuda parcial" [value]="-1"></e-option>
+    <e-option label="Não consegue" [value]="-2"></e-option>
   </app-evaluation-section>
 </app-evaluation-container>
-
-<!-- incompleto -->
