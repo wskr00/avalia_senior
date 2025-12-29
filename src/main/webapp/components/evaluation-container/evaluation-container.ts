@@ -2,7 +2,6 @@ import { Component, OnInit, inject, Output, EventEmitter } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 
-import { HeaderService } from '@/services/header';
 import { BasicInfo } from './basic-info/basic-info';
 import { SubmitButton } from './submit-button/submit-button';
 import { EvaluationFormService } from '@/services/evaluation-form';
@@ -15,14 +14,11 @@ import { EvaluationFormService } from '@/services/evaluation-form';
   providers: [EvaluationFormService],
 })
 export class EvaluationContainer implements OnInit {
-  private headerService = inject(HeaderService);
   protected evaluationFormService = inject(EvaluationFormService);
 
   @Output() finish = new EventEmitter<any>();
 
-  ngOnInit(): void {
-    this.headerService.setContext('form');
-  }
+  ngOnInit(): void {}
 
   onSubmit(): void {
     const form = this.evaluationFormService.form;

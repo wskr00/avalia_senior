@@ -1,6 +1,6 @@
 <header class="grid grid-cols-[1fr_auto_1fr] items-center px-4 py-2">
   <div class="justify-self-start flex items-center">
-    @if (headerService.context() !== 'home') {
+    @if (headerService.showBackButton()) {
     <app-back-button></app-back-button>
     }
   </div>

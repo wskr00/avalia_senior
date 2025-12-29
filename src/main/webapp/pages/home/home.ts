@@ -12,6 +12,6 @@ export class Home implements OnInit {
 
   ngOnInit(): void {
     this.headerService.setTitle('Avalia Senior');
-    this.headerService.setContext('home');
+    this.headerService.setShowBackButton(false);
   }
 }
