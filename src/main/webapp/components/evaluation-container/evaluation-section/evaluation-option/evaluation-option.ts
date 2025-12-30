@@ -9,5 +9,5 @@ import { QuestionOption } from '@/interfaces/evaluation';
 })
 export class EvaluationOption implements QuestionOption {
   @Input({ required: true }) label!: string;
-  @Input({ required: true }) value!: any;
+  @Input({ required: true }) value!: number;
 }

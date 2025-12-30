@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { generate } from '@pdfme/generator';
 import { text } from '@pdfme/schemas';
 import { BLANK_PDF, Template } from '@pdfme/common';
-import { ScaleDefinition, EvaluationResult } from '../interfaces/evaluation';
+import { ScaleDefinition, EvaluationResult, EvaluationBasicInfo } from '../interfaces/evaluation';
 
 @Injectable({
   providedIn: 'root',
@@ -10,14 +10,12 @@ import { ScaleDefinition, EvaluationResult } from '../interfaces/evaluation';
 export class PdfGeneratorService {
   async generateEvaluationPdf(
     title: string,
-    formValues: any,
+    formValues: EvaluationBasicInfo,
     result: EvaluationResult,
     config: ScaleDefinition
   ) {
-    // 1. Formata as referências da escala para uma string multilinhas
     const referencesStr = config.ranges.map((r) => `${r.min}-${r.max} pts: ${r.label}`).join('\n');
 
-    // 2. Define o Template (Onde cada informação vai aparecer no papel)
     const template: Template = {
       basePdf: BLANK_PDF,
       schemas: [
@@ -198,5 +196,6 @@ export class PdfGeneratorService {
     link.href = URL.createObjectURL(blob);
     link.download = `Resultado_${title.replace(/\s+/g, '_')}.pdf`;
     link.click();
+    URL.revokeObjectURL(link.href);
   }
 }

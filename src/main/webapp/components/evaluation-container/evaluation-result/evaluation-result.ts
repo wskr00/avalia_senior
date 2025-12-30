@@ -2,6 +2,7 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import {
+  EvaluationBasicInfo,
   EvaluationResult as IEvaluationResult,
   ScaleDefinition,
 } from '../../../interfaces/evaluation';
@@ -17,7 +18,7 @@ export class EvaluationResult {
   @Input() visible: boolean = false;
   @Input() result?: IEvaluationResult;
   @Input() title: string = '';
-  @Input() formValues: any;
+  @Input() formValues?: EvaluationBasicInfo;
   @Input() config?: ScaleDefinition;
 
   @Output() visibleChange = new EventEmitter<boolean>();

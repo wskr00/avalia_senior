@@ -8,6 +8,13 @@ export interface EvaluationQuestion {
   options: QuestionOption[];
 }
 
+export interface EvaluationBasicInfo {
+  doctorName: string;
+  patientName: string;
+  age: number | null;
+  date: Date | string;
+}
+
 export interface EvaluationRange {
   min: number;
   max: number;
