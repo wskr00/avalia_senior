@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -19,6 +19,7 @@ import { EvaluationFormService } from '@/services/evaluation-form';
   ],
   templateUrl: './basic-info.html',
   styleUrl: './basic-info.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasicInfo {
   protected evaluationFormService = inject(EvaluationFormService);

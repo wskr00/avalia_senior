@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { EvaluationFormService } from '@/services/evaluation-form';
 
@@ -7,16 +7,17 @@ import { EvaluationFormService } from '@/services/evaluation-form';
   imports: [ButtonModule],
   templateUrl: './submit-button.html',
   styleUrl: './submit-button.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SubmitButton {
   protected evaluationFormService = inject(EvaluationFormService);
 
-  @Input() label: string = 'Finalizar';
-  @Input() loading: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() icon: string = 'pi pi-check';
+  label = input<string>('Finalizar');
+  loading = input<boolean>(false);
+  disabled = input<boolean>(false);
+  icon = input<string>('pi pi-check');
 
-  @Output() onClick = new EventEmitter<void>();
+  onClick = output<void>();
 
   execute(): void {
     this.onClick.emit();

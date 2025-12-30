@@ -1,9 +1,9 @@
 <div class="w-full mt-6">
   <p-button
-    [label]="label"
-    [icon]="icon"
-    [loading]="loading"
-    [disabled]="disabled || evaluationFormService.form.invalid"
+    [label]="label()"
+    [icon]="icon()"
+    [loading]="loading()"
+    [disabled]="disabled() || evaluationFormService.form.invalid"
     (onClick)="execute()"
     [fluid]="true"
     severity="primary"

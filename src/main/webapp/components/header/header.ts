@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { HeaderService } from '../../services/header';
 import { BackButton } from './back-button/back-button';
 import { ThemeToggle } from './theme-toggle/theme-toggle';
@@ -8,6 +8,7 @@ import { ThemeToggle } from './theme-toggle/theme-toggle';
   imports: [BackButton, ThemeToggle],
   templateUrl: './header.html',
   styleUrl: './header.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
   protected headerService = inject(HeaderService);

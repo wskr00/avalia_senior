@@ -1,29 +1,34 @@
-import { Component, Input, ContentChildren, QueryList, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  input,
+  contentChildren,
+  inject,
+  OnInit,
+  ChangeDetectionStrategy,
+  computed,
+} from '@angular/core';
 import { ReactiveFormsModule, FormArray, FormControl, Validators } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { EvaluationOption } from './evaluation-option/evaluation-option';
 import { EvaluationFormService } from '@/services/evaluation-form';
-import { EvaluationQuestion, QuestionOption } from '@/interfaces/evaluation';
 
 @Component({
   selector: 'app-evaluation-section',
   imports: [ReactiveFormsModule, CardModule, RadioButtonModule],
   templateUrl: './evaluation-section.html',
   styleUrl: './evaluation-section.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EvaluationSection implements OnInit, EvaluationQuestion {
-  @Input({ required: true }) title!: string;
-
-  @ContentChildren(EvaluationOption) optionsContent!: QueryList<EvaluationOption>;
-
+export class EvaluationSection implements OnInit {
   protected evaluationFormService = inject(EvaluationFormService);
 
-  controlIndex!: number;
+  title = input.required<string>();
+  optionsContent = contentChildren(EvaluationOption);
 
-  get options(): QuestionOption[] {
-    return this.optionsContent?.toArray() || [];
-  }
+  options = computed(() => this.optionsContent());
+
+  controlIndex!: number;
 
   ngOnInit(): void {
     const responsesArray = this.evaluationFormService.form.get('responses') as FormArray;

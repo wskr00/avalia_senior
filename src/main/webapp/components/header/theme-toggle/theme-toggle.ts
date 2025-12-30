@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ThemeService } from '../../../services/theme';
 import { ButtonModule } from 'primeng/button';
 
@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
   imports: [ButtonModule],
   templateUrl: './theme-toggle.html',
   styleUrl: './theme-toggle.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeToggle {
   protected themeService = inject(ThemeService);

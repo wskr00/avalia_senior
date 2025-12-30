@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Location } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 
@@ -7,9 +7,10 @@ import { ButtonModule } from 'primeng/button';
   imports: [ButtonModule],
   templateUrl: './back-button.html',
   styleUrl: './back-button.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BackButton {
-  constructor(private location: Location) {}
+  private location = inject(Location);
 
   goBack(): void {
     this.location.back();

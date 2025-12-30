@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { HeaderService } from '@/services/header';
 
 @Component({
@@ -6,6 +6,7 @@ import { HeaderService } from '@/services/header';
   imports: [],
   templateUrl: './home.html',
   styleUrl: './home.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home implements OnInit {
   private headerService = inject(HeaderService);

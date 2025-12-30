@@ -10,12 +10,12 @@
   <div class="flex flex-col items-center p-6 pt-4 text-center">
     <div class="mb-4">
       <span class="block text-sm uppercase tracking-wider font-semibold">Pontuação</span>
-      <span class="text-4xl font-extrabold">{{ result?.score }}</span>
+      <span class="text-4xl font-extrabold">{{ result()?.score }}</span>
     </div>
 
     <div class="mb-8">
       <span class="block text-sm uppercase tracking-wider font-semibold">Resultado</span>
-      <span class="text-xl font-medium">{{ result?.interpretation }}</span>
+      <span class="text-xl font-medium">{{ result()?.interpretation }}</span>
     </div>
 
     <div class="flex flex-col gap-3 w-full mt-2">

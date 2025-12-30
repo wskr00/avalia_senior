@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { EvaluationContainer } from '@/components/evaluation-container/evaluation-container';
 import { EvaluationOption } from '@/components/evaluation-container/evaluation-section/evaluation-option/evaluation-option';
 import { EvaluationSection } from '@/components/evaluation-container/evaluation-section/evaluation-section';
@@ -10,6 +10,7 @@ import { ScaleDefinition } from '@/interfaces/evaluation';
   imports: [EvaluationContainer, EvaluationSection, EvaluationOption],
   templateUrl: './lawton.html',
   styleUrl: './lawton.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Lawton implements OnInit {
   private headerService = inject(HeaderService);

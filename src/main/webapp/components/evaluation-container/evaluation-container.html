@@ -14,8 +14,8 @@
 
 <app-evaluation-result
   [(visible)]="showResult"
-  [result]="calculationResult"
-  [title]="evaluationTitle"
+  [result]="calculationResult()"
+  [title]="evaluationTitle()"
   [formValues]="evaluationFormService.form.value.basicInfo"
-  [config]="config"
+  [config]="config()"
 ></app-evaluation-result>

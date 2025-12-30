@@ -1,4 +1,13 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnInit,
+  ChangeDetectionStrategy,
+  signal,
+  computed,
+  effect,
+} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 
@@ -16,35 +25,41 @@ import { SubmitButton } from './submit-button/submit-button';
   templateUrl: './evaluation-container.html',
   styleUrl: './evaluation-container.scss',
   providers: [EvaluationFormService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EvaluationContainer implements OnInit {
   protected evaluationFormService = inject(EvaluationFormService);
   private calculatorService = inject(EvaluationCalculatorService);
   private headerService = inject(HeaderService);
 
-  @Input({ required: true }) config!: ScaleDefinition;
+  config = input.required<ScaleDefinition>();
 
-  protected showResult = false;
-  protected calculationResult?: IEvaluationResult;
-  protected evaluationTitle = '';
+  protected showResult = signal(false);
+  protected calculationResult = signal<IEvaluationResult | undefined>(undefined);
 
-  ngOnInit(): void {
-    this.evaluationFormService.setScaleConfig(this.config);
-    this.evaluationTitle = this.headerService.title();
+  protected evaluationTitle = computed(() => this.headerService.title());
+
+  constructor() {
+    effect(() => {
+      this.evaluationFormService.setScaleConfig(this.config());
+    });
   }
+
+  ngOnInit(): void {}
 
   onSubmit(): void {
     const form = this.evaluationFormService.form;
 
     if (form.valid) {
       const responses = form.value.responses;
+      const result = this.calculatorService.calculate(this.config(), responses);
 
-      this.calculationResult = this.calculatorService.calculate(this.config, responses);
-      this.showResult = true;
+      this.calculationResult.set(result);
+      this.showResult.set(true);
 
       console.log('Avaliação Finalizada:', {
         paciente: form.value.basicInfo.patientName,
-        resultado: this.calculationResult,
+        resultado: result,
       });
     } else {
       form.markAllAsTouched();

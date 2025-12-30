@@ -1,13 +1,13 @@
-import { Component, Input } from '@angular/core';
-import { QuestionOption } from '@/interfaces/evaluation';
+import { Component, input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'e-option',
   imports: [],
   templateUrl: './evaluation-option.html',
   styleUrl: './evaluation-option.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EvaluationOption implements QuestionOption {
-  @Input({ required: true }) label!: string;
-  @Input({ required: true }) value!: number;
+export class EvaluationOption {
+  label = input.required<string>();
+  value = input.required<number>();
 }
