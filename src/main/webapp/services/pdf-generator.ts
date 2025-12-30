@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { generate } from '@pdfme/generator';
 import { text } from '@pdfme/schemas';
-import { BLANK_PDF, Template } from '@pdfme/common';
+import { CUSTOM_A4_PDF, Template } from '@pdfme/common';
 import { ScaleDefinition, EvaluationResult, EvaluationBasicInfo } from '../interfaces/evaluation';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class PdfGeneratorService {
     const referencesStr = config.ranges.map((r) => `${r.min}-${r.max} pts: ${r.label}`).join('\n');
 
     const template: Template = {
-      basePdf: BLANK_PDF,
+      basePdf: CUSTOM_A4_PDF,
       schemas: [
         [
           {
@@ -193,9 +193,14 @@ export class PdfGeneratorService {
 
     const blob = new Blob([pdf.buffer], { type: 'application/pdf' });
     const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
+
+    link.href = url;
     link.download = `Resultado_${title.replace(/\s+/g, '_')}.pdf`;
     link.click();
-    URL.revokeObjectURL(link.href);
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+      link.remove();
+    }, 100);
   }
 }

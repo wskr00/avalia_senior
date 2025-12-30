@@ -6,7 +6,7 @@ import { ScaleDefinition, EvaluationResult } from '@/interfaces/evaluation';
 })
 export class EvaluationCalculatorService {
   calculate(config: ScaleDefinition, responses: number[]): EvaluationResult {
-    const sum = responses.reduce((acc, curr) => acc + (curr || 0), 0);
+    const sum = responses.reduce((acc, curr) => acc + (Number(curr) || 0), 0);
 
     const totalScore = config.baseline + sum;
 

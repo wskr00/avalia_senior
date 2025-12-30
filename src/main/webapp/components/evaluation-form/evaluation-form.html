@@ -1,0 +1,47 @@
+<form
+  [formGroup]="evaluationFormService.form"
+  (ngSubmit)="onSubmit()"
+  class="flex flex-col gap-6 p-4 max-w-4xl mx-auto w-full"
+>
+  <p-card class="shadow-sm border surface-border">
+    <app-basic-info></app-basic-info>
+  </p-card>
+
+  @if (evaluationFormService.responses.length === questions().length) {
+  <div formArrayName="responses" class="flex flex-col gap-4">
+    @for (question of questions(); track $index; let qIndex = $index) {
+    <p-card [header]="question.title" class="shadow-sm border surface-border">
+      <div class="flex flex-col gap-3">
+        @for (option of question.options; track $index; let oIndex = $index) {
+        <div class="flex items-center gap-2 mb-2">
+          <p-radioButton
+            [name]="'group-' + qIndex"
+            [value]="option.value"
+            [formControlName]="qIndex"
+            [inputId]="'q' + qIndex + 'opt' + oIndex"
+          ></p-radioButton>
+          <label [for]="'q' + qIndex + 'opt' + oIndex" class="cursor-pointer text-700">
+            {{ option.label }}
+          </label>
+        </div>
+        }
+      </div>
+    </p-card>
+    }
+  </div>
+  } @else {
+  <div class="flex justify-center p-8">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+  </div>
+  }
+
+  <app-submit-button (onClick)="onSubmit()"></app-submit-button>
+</form>
+
+<app-evaluation-result
+  [(visible)]="showResult"
+  [result]="calculationResult()"
+  [title]="evaluationTitle()"
+  [formValues]="evaluationFormService.form.value.basicInfo"
+  [config]="config()"
+></app-evaluation-result>

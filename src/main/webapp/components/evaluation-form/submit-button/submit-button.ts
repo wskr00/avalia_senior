@@ -1,4 +1,6 @@
 import { Component, input, output, inject, ChangeDetectionStrategy } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, startWith } from 'rxjs/operators';
 import { ButtonModule } from 'primeng/button';
 import { EvaluationFormService } from '@/services/evaluation-form';
 
@@ -18,6 +20,14 @@ export class SubmitButton {
   icon = input<string>('pi pi-check');
 
   onClick = output<void>();
+
+  isFormValid = toSignal(
+    this.evaluationFormService.form.statusChanges.pipe(
+      startWith(this.evaluationFormService.form.status),
+      map((status) => status === 'VALID')
+    ),
+    { initialValue: this.evaluationFormService.form.valid }
+  );
 
   execute(): void {
     this.onClick.emit();
