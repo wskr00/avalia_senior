@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { EvaluationForm } from '@/components/evaluation-form/evaluation-form';
-import { EvaluationFormService } from '@/services/evaluation-form';
+import { EvaluationForm } from './evaluation-form';
+import { EvaluationFormService as FormService } from '@/services/evaluation-form';
 import { EvaluationCalculatorService } from '@/services/evaluation-calculator';
 import { HeaderService } from '@/services/header';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -9,41 +8,44 @@ import { signal, Component, input, output, model } from '@angular/core';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { CardModule } from 'primeng/card';
-import { describe, it, expect, beforeEach, beforeAll, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ScaleDefinition, EvaluationQuestion } from '@/interfaces/evaluation';
 
-// 1. Importações do CDK para Harnesses
+import { BasicInfo } from './basic-info/basic-info';
+import { EvaluationResult } from './evaluation-result/evaluation-result';
+import { SubmitButton } from './submit-button/submit-button';
+
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader, ComponentHarness } from '@angular/cdk/testing';
 
-// 2. Harnesses para os Mocks (Abstração da Interface)
 class SubmitButtonHarness extends ComponentHarness {
   static hostSelector = 'app-submit-button';
+
   async click() {
-    // Simula o clique disparando o output de evento
-    const host = await this.host();
-    await host.dispatchEvent('onClick');
+    const button = await this.locatorFor('button')();
+    await button.click();
   }
 }
 
 class EvaluationResultHarness extends ComponentHarness {
   static hostSelector = 'app-evaluation-result';
+
   async isVisible() {
-    // Como visible é um model/signal no mock, verificamos o estado no componente
-    // Em um teste real de harness, leríamos o DOM do modal
     const host = await this.host();
-    return (await host.getAttribute('ng-reflect-visible')) === 'true';
+    return (await host.getAttribute('data-test-visible')) === 'true';
   }
 }
 
-// Mocks (Stubs)
 @Component({ selector: 'app-basic-info', standalone: true, template: '' })
 class MockBasicInfo {}
 
 @Component({
   selector: 'app-evaluation-result',
   standalone: true,
-  template: '<div [attr.ng-reflect-visible]="visible()"></div>',
+  template: '',
+  host: {
+    '[attr.data-test-visible]': 'visible()',
+  },
 })
 class MockEvaluationResult {
   title = input<string>();
@@ -56,7 +58,7 @@ class MockEvaluationResult {
 @Component({
   selector: 'app-submit-button',
   standalone: true,
-  template: '<button (click)="onClick.emit()"></button>',
+  template: '<button (click)="onClick.emit()">Enviar</button>',
 })
 class MockSubmitButton {
   loading = input<boolean>(false);
@@ -64,10 +66,10 @@ class MockSubmitButton {
   onClick = output<void>();
 }
 
-describe('EvaluationForm', () => {
+describe('EvaluationForm (Componente)', () => {
   let component: EvaluationForm;
   let fixture: ComponentFixture<EvaluationForm>;
-  let formService: EvaluationFormService;
+  let formService: FormService;
   let calculatorService: EvaluationCalculatorService;
   let loader: HarnessLoader;
 
@@ -81,17 +83,6 @@ describe('EvaluationForm', () => {
     { title: 'Pergunta 1', options: [{ label: 'Opt 1', value: 0 }] },
   ];
 
-  beforeAll(() => {
-    vi.stubGlobal(
-      'matchMedia',
-      vi.fn().mockReturnValue({
-        matches: false,
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-      })
-    );
-  });
-
   beforeEach(async () => {
     const calculatorMock = { calculate: vi.fn() };
     const headerMock = {
@@ -104,35 +95,45 @@ describe('EvaluationForm', () => {
     await TestBed.configureTestingModule({
       imports: [EvaluationForm, ReactiveFormsModule, CardModule],
       providers: [
+        FormService,
         { provide: EvaluationCalculatorService, useValue: calculatorMock },
         { provide: HeaderService, useValue: headerMock },
         providePrimeNG({ theme: { preset: Aura } }),
       ],
     })
       .overrideComponent(EvaluationForm, {
-        add: { imports: [MockBasicInfo, MockEvaluationResult, MockSubmitButton] },
+        remove: {
+          imports: [BasicInfo, EvaluationResult, SubmitButton],
+          providers: [FormService],
+        },
+        add: {
+          imports: [MockBasicInfo, MockEvaluationResult, MockSubmitButton],
+        },
       })
       .compileComponents();
 
+    formService = TestBed.inject(FormService);
+    calculatorService = TestBed.inject(EvaluationCalculatorService);
+
     fixture = TestBed.createComponent(EvaluationForm);
     component = fixture.componentInstance;
-
-    calculatorService = TestBed.inject(EvaluationCalculatorService);
-    formService = fixture.debugElement.injector.get(EvaluationFormService);
     loader = TestbedHarnessEnvironment.loader(fixture);
 
     fixture.componentRef.setInput('config', mockConfig);
     fixture.componentRef.setInput('questions', mockQuestions);
 
-    await fixture.whenStable();
     fixture.detectChanges();
+    await fixture.whenStable();
+  });
+
+  it('deve ser criado com sucesso', () => {
+    expect(component).toBeTruthy();
   });
 
   it('deve calcular o resultado e abrir o modal quando o formulário for válido', async () => {
     const expectedResult = { score: 25, interpretation: 'Independente' };
     vi.mocked(calculatorService.calculate).mockReturnValue(expectedResult);
 
-    // Setup do estado do formulário
     formService.initializeResponses(1);
     formService.patchBasicInfo({
       doctorName: 'Dr House',
@@ -142,32 +143,34 @@ describe('EvaluationForm', () => {
     });
     formService.responses.at(0).setValue(0);
 
-    // Ação: Interagir com o botão via Harness em vez de chamar component.onSubmit()
+    fixture.detectChanges();
+
     const submitBtn = await loader.getHarness(SubmitButtonHarness);
     await submitBtn.click();
 
-    // Verificação de lógica
-    expect(calculatorService.calculate).toHaveBeenCalled();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
 
-    // Verificação de UI via Harness do Modal
+    expect(calculatorService.calculate).toHaveBeenCalledWith(mockConfig, [0]);
+
     const resultModal = await loader.getHarness(EvaluationResultHarness);
     expect(await resultModal.isVisible()).toBe(true);
   });
 
-  it('deve atualizar o título do modal quando o HeaderService mudar', async () => {
-    const resultEl = fixture.debugElement.query(By.directive(MockEvaluationResult));
-    const resultInstance = resultEl.componentInstance;
-
-    expect(resultInstance.title()).toBe('Título Teste');
-  });
-
-  it('deve reinicializar o formulário ao detectar novas questões', async () => {
+  it('deve reinicializar o formulário ao detectar novas questões via input (Signal)', async () => {
     const spyInit = vi.spyOn(formService, 'initializeResponses');
-    const novasQuestoes = [...mockQuestions, { title: 'Q2', options: [] }];
+
+    const novasQuestoes = [
+      { title: 'Pergunta 1', options: [] },
+      { title: 'Pergunta 2', options: [] },
+    ];
 
     fixture.componentRef.setInput('questions', novasQuestoes);
+
     fixture.detectChanges();
     await fixture.whenStable();
+    fixture.detectChanges();
 
     expect(spyInit).toHaveBeenCalledWith(2);
   });

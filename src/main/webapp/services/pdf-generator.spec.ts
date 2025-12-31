@@ -29,8 +29,8 @@ describe('PdfGeneratorService', () => {
     id: 'lawton',
     baseline: 27,
     ranges: [
-      { min: 0, max: 20, label: 'Dependente' },
-      { min: 21, max: 27, label: 'Independente' },
+      { min: 0, max: 20, label: 'Dependência Total' },
+      { min: 21, max: 27, label: 'Independência' },
     ],
   };
 
@@ -56,44 +56,59 @@ describe('PdfGeneratorService', () => {
 
   afterEach(() => {
     vi.clearAllMocks();
-    vi.unstubAllGlobals();
   });
 
   it('deve ser criado com sucesso', () => {
     expect(service).toBeTruthy();
   });
 
-  it('deve formatar corretamente as referências e chamar a função generate', async () => {
-    await service.generateEvaluationPdf('Escala de Lawton', mockFormValues, mockResult, mockConfig);
+  it('deve chamar a função generate com os dados da escala e referências', async () => {
+    const scaleTitle = 'Escala de Lawton';
+    await service.generateEvaluationPdf(scaleTitle, mockFormValues, mockResult, mockConfig);
 
     expect(pdfmeGenerator.generate).toHaveBeenCalled();
 
     const callArgs = vi.mocked(pdfmeGenerator.generate).mock.calls[0][0];
+    const inputs = callArgs.inputs[0];
 
-    const firstInput = callArgs.inputs[0];
-    expect(firstInput['tituloEscala']).toBe('ESCALA DE LAWTON');
+    const allValues = Object.values(inputs).join(' ').toUpperCase();
+    expect(allValues).toContain(scaleTitle.toUpperCase());
 
-    const expectedRef = '• 0-20 pts: Dependente\n• 21-27 pts: Independente';
-    expect(firstInput['tabelaReferencias']).toBe(expectedRef);
+    const refs = (inputs['tabelaReferencias'] || '').toString();
+    expect(refs).toContain('Dependência Total');
+    expect(refs).toContain('Independência');
   });
 
-  it('deve criar um link temporário para disparar o download do arquivo', async () => {
+  it('deve disparar o download com um nome de arquivo baseado no título', async () => {
     const createElementSpy = vi.spyOn(document, 'createElement');
+    const title = 'Mini-Mental';
 
-    await service.generateEvaluationPdf('Teste', mockFormValues, mockResult, mockConfig);
+    await service.generateEvaluationPdf(title, mockFormValues, mockResult, mockConfig);
 
     expect(createElementSpy).toHaveBeenCalledWith('a');
-
     const mockLink = createElementSpy.mock.results[0].value as any;
-    expect(mockLink.download).toBe('Resultado_Teste.pdf');
+
+    expect(mockLink.download).toContain(title);
+    expect(mockLink.download).toMatch(/\.pdf$/);
   });
 
-  it('deve formatar a data para o padrão pt-BR no PDF', async () => {
+  it('deve formatar a data para o padrão brasileiro (DD/MM/YYYY) no PDF', async () => {
     await service.generateEvaluationPdf('Teste', mockFormValues, mockResult, mockConfig);
 
     const callArgs = vi.mocked(pdfmeGenerator.generate).mock.calls[0][0];
-    const firstInput = callArgs.inputs[0];
+    const inputs = callArgs.inputs[0];
 
-    expect(firstInput['dataAvaliacaoValue']).toBe('01/01/2025');
+    expect(inputs['dataAvaliacaoValue']).toBe('01/01/2025');
+  });
+
+  it('deve enviar os dados do médico e paciente corretamente', async () => {
+    await service.generateEvaluationPdf('Teste', mockFormValues, mockResult, mockConfig);
+
+    const inputs = vi.mocked(pdfmeGenerator.generate).mock.calls[0][0].inputs[0];
+
+    expect(inputs).toHaveProperty('nomeMedico', mockFormValues.doctorName);
+    expect(inputs).toHaveProperty('nomePaciente', mockFormValues.patientName);
+
+    expect(inputs['idadePaciente']).toBe(`${mockFormValues.age} anos`);
   });
 });

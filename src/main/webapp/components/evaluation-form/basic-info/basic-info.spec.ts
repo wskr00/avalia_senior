@@ -7,7 +7,6 @@ import { PrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest';
 
-// 1. Ferramentas do CDK para Harnesses
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader, ComponentHarness } from '@angular/cdk/testing';
 
@@ -16,7 +15,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FloatLabelModule } from 'primeng/floatlabel';
 
-// 2. Harnesses Customizados (Robustos e Reutilizáveis)
 class InputNumberHarness extends ComponentHarness {
   static hostSelector = 'p-inputNumber';
   async getFormControlName() {
@@ -84,7 +82,6 @@ describe('BasicInfo', () => {
     component = fixture.componentInstance;
     primengConfig = TestBed.inject(PrimeNG);
 
-    // Inicializa o Loader
     loader = TestbedHarnessEnvironment.loader(fixture);
 
     fixture.detectChanges();
@@ -108,7 +105,6 @@ describe('BasicInfo', () => {
   });
 
   it('deve atualizar o formulário quando o valor do input de nome do médico mudar', async () => {
-    // Para inputs nativos com pInputText, podemos usar seletores simples ou um harness genérico
     const input = fixture.nativeElement.querySelector('#doctorName');
 
     input.value = 'Dr. Gregory House';
@@ -119,7 +115,6 @@ describe('BasicInfo', () => {
   });
 
   it('deve vincular corretamente o controle de idade ao p-inputNumber', async () => {
-    // Usamos o Harness em vez de By.css
     const ageHarness = await loader.getHarness(InputNumberHarness);
     expect(await ageHarness.getFormControlName()).toBe('age');
   });

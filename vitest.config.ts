@@ -10,14 +10,13 @@ export default defineConfig({
     },
   },
   test: {
-    globals: true, // Permite usar describe/it/expect sem import explícito
+    globals: true,
     environment: 'jsdom',
     setupFiles: ['src/main/webapp/test-setup.ts'],
     include: ['src/main/webapp/**/*.spec.ts'],
-    // Configurações de execução
     pool: 'threads',
     isolate: true,
-    css: false, // O Vitest não processará o SCSS/CSS como arquivos reais, apenas o Angular fará isso
+    css: true,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

@@ -6,11 +6,11 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { signal, Component } from '@angular/core';
 import { provideRouter } from '@angular/router';
-// 'beforeAll' e 'vi' (para matchMedia) removidos pois agora são globais
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-// 1. Mocks para os componentes filhos (Stubs)
-// Garantem que o template seja validado sem carregar dependências pesadas
+import { BackButton } from './back-button/back-button';
+import { ThemeToggle } from './theme-toggle/theme-toggle';
+
 @Component({
   selector: 'app-back-button',
   standalone: true,
@@ -29,7 +29,6 @@ describe('Header (Componente)', () => {
   let component: Header;
   let fixture: ComponentFixture<Header>;
 
-  // Sinais mockados para controle de estado reativo
   const titleMock = signal('Título Inicial');
   const showBackButtonMock = signal(true);
 
@@ -48,10 +47,9 @@ describe('Header (Componente)', () => {
           theme: { preset: Aura },
         }),
       ],
-      // SEM NO_ERRORS_SCHEMA: O Angular validará app-back-button e app-theme-toggle
     })
       .overrideComponent(Header, {
-        // Substituímos os componentes reais pelos Mocks no template do Header
+        remove: { imports: [BackButton, ThemeToggle] },
         add: { imports: [MockBackButton, MockThemeToggle] },
       })
       .compileComponents();
@@ -59,7 +57,6 @@ describe('Header (Componente)', () => {
     fixture = TestBed.createComponent(Header);
     component = fixture.componentInstance;
 
-    // Resetamos os sinais para o estado inicial antes de cada teste
     titleMock.set('Título Inicial');
     showBackButtonMock.set(true);
 
@@ -74,7 +71,6 @@ describe('Header (Componente)', () => {
     const h1 = fixture.debugElement.query(By.css('h1')).nativeElement;
     expect(h1.textContent).toContain('Título Inicial');
 
-    // Alteração do sinal deve refletir no DOM após detectChanges
     titleMock.set('Nova Escala');
     fixture.detectChanges();
 
@@ -85,7 +81,6 @@ describe('Header (Componente)', () => {
     showBackButtonMock.set(true);
     fixture.detectChanges();
 
-    // By.directive é mais seguro que By.css para componentes
     const backButton = fixture.debugElement.query(By.directive(MockBackButton));
     expect(backButton).not.toBeNull();
   });
