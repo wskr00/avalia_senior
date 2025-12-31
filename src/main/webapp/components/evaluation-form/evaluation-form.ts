@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
-import { RadioButtonModule } from 'primeng/radiobutton'; // Importado para a lógica integrada
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 import {
   EvaluationQuestion,
@@ -23,16 +23,18 @@ import { HeaderService } from '@/services/header';
 import { BasicInfo } from './basic-info/basic-info';
 import { EvaluationResult } from './evaluation-result/evaluation-result';
 import { SubmitButton } from './submit-button/submit-button';
+import { RippleModule } from 'primeng/ripple';
 
 @Component({
   selector: 'app-evaluation-form',
   imports: [
     ReactiveFormsModule,
     CardModule,
-    RadioButtonModule, // Adicionado
+    RadioButtonModule,
     BasicInfo,
     SubmitButton,
     EvaluationResult,
+    RippleModule,
   ],
   templateUrl: './evaluation-form.html',
   styleUrl: './evaluation-form.scss',

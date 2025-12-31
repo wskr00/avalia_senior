@@ -25,6 +25,7 @@
       <div class="flex flex-col gap-1">
         @for (option of question.options; track $index; let oIndex = $index) {
         <div
+          pRipple
           class="flex items-center gap-3 p-3 rounded-xl transition-all duration-200 cursor-pointer group hover:bg-emphasis"
           (click)="radioButton.select($event)"
         >
