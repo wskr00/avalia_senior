@@ -61,7 +61,9 @@ export class EvaluationForm implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.headerService.setShowBackButton(true);
+  }
 
   onSubmit(): void {
     const form = this.evaluationFormService.form;
