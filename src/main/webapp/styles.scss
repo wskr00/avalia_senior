@@ -7,3 +7,25 @@ html {
   font-style: normal;
   font-variation-settings: 'slnt' 0, 'wdth' 100, 'GRAD' 0, 'ROND' 50;
 }
+
+::view-transition-old(root) {
+  animation: 350ms cubic-bezier(0.4, 0, 1, 1) both blur-fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 350ms cubic-bezier(0, 0, 0.2, 1) both blur-fade-in;
+}
+
+@keyframes blur-fade-out {
+  to {
+    opacity: 0;
+    filter: blur(10px);
+  }
+}
+
+@keyframes blur-fade-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+  }
+}
