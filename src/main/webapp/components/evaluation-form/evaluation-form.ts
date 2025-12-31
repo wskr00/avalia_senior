@@ -45,7 +45,6 @@ export class EvaluationForm implements OnInit {
   private headerService = inject(HeaderService);
 
   config = input.required<ScaleDefinition>();
-  // Novo: Array de perguntas que dita a estrutura do formulário
   questions = input.required<EvaluationQuestion[]>();
 
   protected showResult = signal(false);
@@ -56,7 +55,6 @@ export class EvaluationForm implements OnInit {
     effect(() => {
       this.evaluationFormService.setScaleConfig(this.config());
 
-      // Inicializa todo o array de uma vez, evitando o lag de registros individuais
       if (this.questions().length > 0) {
         this.evaluationFormService.initializeResponses(this.questions().length);
       }

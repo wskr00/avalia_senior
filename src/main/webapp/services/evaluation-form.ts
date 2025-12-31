@@ -23,12 +23,10 @@ export class EvaluationFormService {
     const currentLength = responsesArray.length;
 
     if (currentLength < count) {
-      // Adiciona apenas a diferença
       for (let i = currentLength; i < count; i++) {
         responsesArray.push(new FormControl(null, Validators.required));
       }
     } else if (currentLength > count) {
-      // Remove apenas o excedente do final
       for (let i = currentLength; i > count; i--) {
         responsesArray.removeAt(i - 1);
       }

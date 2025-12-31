@@ -1,13 +1,10 @@
-<div class="w-full mt-6">
-  <p-button
-    [label]="label()"
-    [icon]="icon()"
-    [loading]="loading()"
-    [disabled]="disabled() || !isFormValid()"
-    (onClick)="execute()"
-    [fluid]="true"
-    severity="primary"
-    size="large"
-  >
-  </p-button>
-</div>
+<p-button
+  label="Finalizar"
+  [loading]="loading()"
+  [disabled]="disabled() || !isFormValid()"
+  (onClick)="execute()"
+  [fluid]="true"
+  size="large"
+  class="end"
+>
+</p-button>

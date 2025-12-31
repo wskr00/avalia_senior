@@ -1,57 +1,35 @@
 <div [formGroup]="evaluationFormService.form">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4" formGroupName="basicInfo">
-    <div class="flex flex-col gap-2">
-      <label for="doctorName" class="font-medium text-900">Nome do Médico</label>
-      <p-iconField iconPosition="left">
-        <p-inputIcon class="pi pi-user-edit" />
-        <input
-          pInputText
-          id="doctorName"
-          formControlName="doctorName"
-          placeholder="Dr(a). Exemplo"
-          [fluid]="true"
-        />
-      </p-iconField>
-    </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-y-6" formGroupName="basicInfo">
+    <p-floatLabel variant="on" class="text-sm md:text-base">
+      <input pInputText id="doctorName" formControlName="doctorName" [fluid]="true" />
+      <label for="doctorName">Nome do Médico</label>
+    </p-floatLabel>
 
-    <div class="flex flex-col gap-2">
-      <label for="patientName" class="font-medium text-900">Nome do Paciente</label>
-      <p-iconField iconPosition="left">
-        <p-inputIcon class="pi pi-user" />
-        <input
-          pInputText
-          id="patientName"
-          formControlName="patientName"
-          placeholder="Nome Completo"
-          [fluid]="true"
-        />
-      </p-iconField>
-    </div>
+    <p-floatLabel variant="on" class="text-sm md:text-base">
+      <input pInputText id="patientName" formControlName="patientName" [fluid]="true" />
+      <label for="patientName">Nome do Paciente</label>
+    </p-floatLabel>
 
-    <div class="flex flex-col gap-2">
-      <label for="age" class="font-medium text-900">Idade</label>
+    <p-floatLabel variant="on" class="text-sm md:text-base">
       <p-inputNumber
-        id="age"
+        inputId="age"
         formControlName="age"
-        placeholder="Ex: 70"
         [min]="0"
         [max]="150"
         [fluid]="true"
-      >
-      </p-inputNumber>
-    </div>
+      ></p-inputNumber>
+      <label for="age">Idade do Paciente</label>
+    </p-floatLabel>
 
-    <div class="flex flex-col gap-2">
-      <label for="date" class="font-medium text-900">Data da Avaliação</label>
+    <p-floatLabel variant="on" class="text-sm md:text-base">
       <p-datepicker
-        id="date"
+        inputId="date"
         formControlName="date"
         dateFormat="dd/mm/yy"
         [showIcon]="true"
-        placeholder="00/00/0000"
         [fluid]="true"
-      >
-      </p-datepicker>
-    </div>
+      ></p-datepicker>
+      <label for="date">Data da Avaliação</label>
+    </p-floatLabel>
   </div>
 </div>

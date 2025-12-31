@@ -1,9 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { HeaderService } from '@/services/header';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [ButtonModule, CardModule, RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

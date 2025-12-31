@@ -1,11 +1,13 @@
-<header class="grid grid-cols-[1fr_auto_1fr] items-center px-4 py-2">
+<header
+  class="sticky top-0 z-50 backdrop-blur-sm grid grid-cols-[1fr_auto_1fr] items-center px-4 py-2"
+>
   <div class="justify-self-start flex items-center">
     @if (headerService.showBackButton()) {
     <app-back-button></app-back-button>
     }
   </div>
 
-  <h1 class="text-xl font-medium text-center">
+  <h1 class="text-base md:text-lg lg:text-xl font-medium text-center">
     {{ headerService.title() }}
   </h1>
 

@@ -14,10 +14,8 @@ import { EvaluationFormService } from '@/services/evaluation-form';
 export class SubmitButton {
   protected evaluationFormService = inject(EvaluationFormService);
 
-  label = input<string>('Finalizar');
   loading = input<boolean>(false);
   disabled = input<boolean>(false);
-  icon = input<string>('pi pi-check');
 
   onClick = output<void>();
 

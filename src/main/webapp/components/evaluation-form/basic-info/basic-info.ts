@@ -6,6 +6,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { EvaluationFormService } from '@/services/evaluation-form';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-basic-info',
@@ -16,6 +17,7 @@ import { EvaluationFormService } from '@/services/evaluation-form';
     DatePickerModule,
     IconFieldModule,
     InputIconModule,
+    FloatLabelModule,
   ],
   templateUrl: './basic-info.html',
   styleUrl: './basic-info.scss',
