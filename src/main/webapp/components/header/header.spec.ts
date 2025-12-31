@@ -13,14 +13,12 @@ import { ThemeToggle } from './theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-back-button',
-  standalone: true,
   template: '<button>Mock Back Button</button>',
 })
 class MockBackButton {}
 
 @Component({
   selector: 'app-theme-toggle',
-  standalone: true,
   template: '<div>Mock Theme Toggle</div>',
 })
 class MockThemeToggle {}

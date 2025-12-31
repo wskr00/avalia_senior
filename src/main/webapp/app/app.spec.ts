@@ -11,7 +11,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   template: '<header>Mock Header</header>',
 })
 class MockHeader {}

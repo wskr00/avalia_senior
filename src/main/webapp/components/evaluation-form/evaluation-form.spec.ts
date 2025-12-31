@@ -36,12 +36,11 @@ class EvaluationResultHarness extends ComponentHarness {
   }
 }
 
-@Component({ selector: 'app-basic-info', standalone: true, template: '' })
+@Component({ selector: 'app-basic-info', template: '' })
 class MockBasicInfo {}
 
 @Component({
   selector: 'app-evaluation-result',
-  standalone: true,
   template: '',
   host: {
     '[attr.data-test-visible]': 'visible()',
@@ -57,7 +56,6 @@ class MockEvaluationResult {
 
 @Component({
   selector: 'app-submit-button',
-  standalone: true,
   template: '<button (click)="onClick.emit()">Enviar</button>',
 })
 class MockSubmitButton {

@@ -57,6 +57,7 @@ describe('Home (Componente)', () => {
         provideRouter([
           { path: 'lawton', component: class {} },
           { path: 'katz', component: class {} },
+          { path: 'gds', component: class {} },
         ]),
         providePrimeNG({ theme: { preset: Aura } }),
       ],
@@ -109,13 +110,28 @@ describe('Home (Componente)', () => {
     expect(await katzBtn?.getRouterLink()).toBe('/katz');
   });
 
+  it('deve ter o link correto para a Escala de Depressão Geriátrica', async () => {
+    const buttons = await loader.getAllHarnesses(PrimeButtonHarness);
+
+    let gdsBtn;
+    for (const btn of buttons) {
+      if ((await btn.getLabel()) === 'Escala de Depressão Geriátrica') {
+        gdsBtn = btn;
+        break;
+      }
+    }
+
+    expect(gdsBtn).toBeDefined();
+    expect(await gdsBtn?.getRouterLink()).toBe('/gds');
+  });
+
   it('deve ter aria-labels descritivos em todos os botões de escala', async () => {
     const buttons = await loader.getAllHarnesses(PrimeButtonHarness);
 
     const expectedLabels = [
       'Acessar Escala de Lawton',
       'Acessar Índice de Katz',
-      'Acessar Outra Avaliação',
+      'Acessar Escala de Depressão Geriátrica',
     ];
 
     for (let i = 0; i < buttons.length; i++) {

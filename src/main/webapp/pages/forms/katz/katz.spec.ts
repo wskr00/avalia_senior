@@ -11,7 +11,6 @@ import { Katz } from './katz';
 
 @Component({
   selector: 'app-evaluation-form',
-  standalone: true,
   template: '<div>Mock Evaluation Form</div>',
 })
 class MockEvaluationForm {
@@ -82,7 +81,6 @@ describe('Katz (Componente)', () => {
 
     questions.forEach((question) => {
       expect(question.options.length).toBe(3);
-      // No Katz, as opções geralmente seguem o padrão: 0 (Independente), 0 (Com ajuda parcial/específica), 1 (Dependente)
       expect(question.options[0].value).toBe(0);
       expect(question.options[1].value).toBe(0);
       expect(question.options[2].value).toBe(1);

@@ -11,7 +11,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 @Component({
   selector: 'app-evaluation-form',
-  standalone: true,
   template: '<div>Mock Evaluation Form</div>',
 })
 class MockEvaluationForm {
