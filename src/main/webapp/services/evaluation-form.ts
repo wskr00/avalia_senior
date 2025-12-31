@@ -1,5 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, startWith } from 'rxjs';
 import { ScaleDefinition, EvaluationBasicInfo } from '@/interfaces/evaluation';
 
 @Injectable()
@@ -17,6 +19,14 @@ export class EvaluationFormService {
     }),
     responses: this.fb.array([]),
   });
+
+  isValid = toSignal(
+    this.form.statusChanges.pipe(
+      map(() => this.form.valid),
+      startWith(this.form.valid)
+    ),
+    { initialValue: false }
+  );
 
   initializeResponses(count: number): void {
     const responsesArray = this.responses;

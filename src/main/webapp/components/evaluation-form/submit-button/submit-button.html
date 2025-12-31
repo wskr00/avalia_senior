@@ -1,7 +1,7 @@
 <p-button
   label="Finalizar"
   [loading]="loading()"
-  [disabled]="disabled() || !isFormValid()"
+  [disabled]="disabled() || !evaluationFormService.isValid()"
   (onClick)="execute()"
   [fluid]="true"
   size="large"
