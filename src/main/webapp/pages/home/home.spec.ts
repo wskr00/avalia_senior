@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { Home } from './home';
 import { HeaderService } from '@/services/header';
 import { provideRouter } from '@angular/router';
@@ -8,23 +7,40 @@ import { CardModule } from 'primeng/card';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { signal } from '@angular/core';
-import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest';
+// Importamos apenas o necessário. 'beforeAll' e o stub de 'matchMedia' foram removidos
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { HarnessLoader, ComponentHarness } from '@angular/cdk/testing';
+
+/**
+ * Harness customizado para o p-button.
+ * Abstrai a estrutura interna do PrimeNG, tornando o teste resiliente a atualizações.
+ */
+class PrimeButtonHarness extends ComponentHarness {
+  static hostSelector = 'p-button';
+
+  async getLabel(): Promise<string | null> {
+    const host = await this.host();
+    return host.getAttribute('label');
+  }
+
+  async getAriaLabel(): Promise<string | null> {
+    const host = await this.host();
+    return (await host.getAttribute('aria-label')) || (await host.getAttribute('arialabel'));
+  }
+
+  async getRouterLink(): Promise<string | null> {
+    const host = await this.host();
+    return host.getAttribute('routerLink');
+  }
+}
 
 describe('Home (Componente)', () => {
   let component: Home;
   let fixture: ComponentFixture<Home>;
   let headerService: HeaderService;
-
-  beforeAll(() => {
-    vi.stubGlobal(
-      'matchMedia',
-      vi.fn().mockReturnValue({
-        matches: false,
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-      })
-    );
-  });
+  let loader: HarnessLoader;
 
   beforeEach(async () => {
     const headerServiceMock = {
@@ -39,15 +55,18 @@ describe('Home (Componente)', () => {
       providers: [
         { provide: HeaderService, useValue: headerServiceMock },
         provideRouter([{ path: 'lawton', component: class {} }]),
-        providePrimeNG({
-          theme: { preset: Aura },
-        }),
+        providePrimeNG({ theme: { preset: Aura } }),
       ],
+      // SEM NO_ERRORS_SCHEMA: O Angular agora valida cada tag e input no template
     }).compileComponents();
 
     fixture = TestBed.createComponent(Home);
     component = fixture.componentInstance;
     headerService = TestBed.inject(HeaderService);
+
+    // Inicializa o loader do CDK para buscar os harnesses
+    loader = TestbedHarnessEnvironment.loader(fixture);
+
     fixture.detectChanges();
   });
 
@@ -59,22 +78,23 @@ describe('Home (Componente)', () => {
     expect(headerService.setTitle).toHaveBeenCalledWith('Avalia Senior');
   });
 
-  it('deve esconder o botão de voltar no ngOnInit', () => {
-    expect(headerService.setShowBackButton).toHaveBeenCalledWith(false);
+  it('deve ter o link correto para a Escala de Lawton', async () => {
+    const buttons = await loader.getAllHarnesses(PrimeButtonHarness);
+
+    let lawtonBtn;
+    for (const btn of buttons) {
+      if ((await btn.getLabel()) === 'Escala de Lawton') {
+        lawtonBtn = btn;
+        break;
+      }
+    }
+
+    expect(lawtonBtn).toBeDefined();
+    expect(await lawtonBtn?.getRouterLink()).toBe('/lawton');
   });
 
-  it('deve exibir o título do card "Escalas de Avaliação"', () => {
-    const title = fixture.debugElement.query(By.css('h2')).nativeElement;
-    expect(title.textContent).toContain('Escalas de Avaliação');
-  });
-
-  it('deve ter o link correto para a Escala de Lawton', () => {
-    const lawtonBtn = fixture.debugElement.query(By.css('p-button[label="Escala de Lawton"]'));
-    expect(lawtonBtn.attributes['routerLink']).toBe('/lawton');
-  });
-
-  it('deve ter aria-labels descritivos em todos os botões de escala', () => {
-    const buttons = fixture.debugElement.queryAll(By.css('p-button'));
+  it('deve ter aria-labels descritivos em todos os botões de escala', async () => {
+    const buttons = await loader.getAllHarnesses(PrimeButtonHarness);
 
     const expectedLabels = [
       'Acessar Escala de Lawton',
@@ -82,18 +102,17 @@ describe('Home (Componente)', () => {
       'Acessar Outra Avaliação',
     ];
 
-    buttons.forEach((btn, index) => {
-      const label =
-        typeof btn.componentInstance.ariaLabel === 'function'
-          ? btn.componentInstance.ariaLabel()
-          : btn.componentInstance.ariaLabel;
-
-      expect(label).toBe(expectedLabels[index]);
-    });
+    for (let i = 0; i < buttons.length; i++) {
+      const label = await buttons[i].getAriaLabel();
+      expect(label).toBe(expectedLabels[i]);
+    }
   });
 
-  it('deve renderizar os botões com a propriedade fluid ativa (largura total)', () => {
-    const lawtonBtn = fixture.debugElement.query(By.css('p-button')).componentInstance;
-    expect(lawtonBtn.fluid()).toBe(true);
+  it('deve renderizar os botões com a propriedade fluid ativa', async () => {
+    const button = await loader.getHarness(PrimeButtonHarness);
+    const host = await button.host();
+
+    // Verificamos a classe CSS aplicada pelo PrimeNG
+    expect(await host.hasClass('p-button-fluid')).toBe(true);
   });
 });

@@ -1,79 +1,66 @@
 import { TestBed } from '@angular/core/testing';
 import { ThemeService } from './theme';
 import { PLATFORM_ID } from '@angular/core';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 describe('ThemeService', () => {
-  const localStorageMock = (() => {
-    let store: Record<string, string> = {};
-    return {
-      getItem: vi.fn((key: string) => store[key] || null),
-      setItem: vi.fn((key: string, value: string) => {
-        store[key] = value;
-      }),
-      clear: vi.fn(() => {
-        store = {};
-      }),
-    };
-  })();
-
-  const mockMatchMedia = (matches: boolean) => {
-    vi.stubGlobal(
-      'matchMedia',
-      vi.fn().mockReturnValue({
-        matches,
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-      })
-    );
+  // 1. Mock do localStorage mais limpo usando as próprias utilidades do Vitest
+  const localStorageMock = {
+    getItem: vi.fn(),
+    setItem: vi.fn(),
+    clear: vi.fn(),
   };
 
   beforeEach(() => {
     vi.stubGlobal('localStorage', localStorageMock);
-    localStorageMock.clear();
+    vi.clearAllMocks();
 
-    vi.stubGlobal(
-      'matchMedia',
-      vi.fn().mockReturnValue({
-        matches: false,
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-      })
-    );
-
+    // Resetamos o estado do DOM para garantir isolamento entre testes
     document.documentElement.classList.remove('app-dark');
   });
 
-  afterEach(() => {
-    vi.unstubAllGlobals();
-    vi.clearAllMocks();
-  });
+  // Nota: Removido vi.unstubAllGlobals() para não matar o matchMedia global
+  // que outros arquivos .spec.ts precisam.
 
   describe('Inicialização no Navegador', () => {
-    const setup = () => {
+    const setup = (platform: 'browser' | 'server' = 'browser') => {
       TestBed.configureTestingModule({
-        providers: [ThemeService, { provide: PLATFORM_ID, useValue: 'browser' }],
+        providers: [ThemeService, { provide: PLATFORM_ID, useValue: platform }],
       });
       const service = TestBed.inject(ThemeService);
+      // flushEffects garante que o effect() inicial do Signal rode
       TestBed.flushEffects();
       return service;
     };
 
     it('deve carregar o tema escuro se estiver salvo no localStorage', () => {
-      localStorageMock.setItem('theme', 'dark');
+      localStorageMock.getItem.mockReturnValue('dark');
       const service = setup();
+
       expect(service.isDarkMode()).toBe(true);
     });
 
     it('deve carregar o tema claro se estiver salvo no localStorage', () => {
-      localStorageMock.setItem('theme', 'light');
+      localStorageMock.getItem.mockReturnValue('light');
       const service = setup();
+
       expect(service.isDarkMode()).toBe(false);
     });
 
     it('deve respeitar a preferência do sistema se o localStorage estiver vazio', () => {
-      mockMatchMedia(true);
+      // Sobrescrevemos o mock global apenas para este teste específico
+      vi.stubGlobal(
+        'matchMedia',
+        vi.fn().mockReturnValue({
+          matches: true, // Simula preferência do sistema por Dark Mode
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+        })
+      );
+
+      localStorageMock.getItem.mockReturnValue(null);
       const service = setup();
+
       expect(service.isDarkMode()).toBe(true);
     });
   });
@@ -82,7 +69,6 @@ describe('ThemeService', () => {
     let service: ThemeService;
 
     beforeEach(() => {
-      mockMatchMedia(false);
       TestBed.configureTestingModule({
         providers: [ThemeService, { provide: PLATFORM_ID, useValue: 'browser' }],
       });
@@ -93,28 +79,30 @@ describe('ThemeService', () => {
     it('deve alternar o tema ao chamar toggleTheme', () => {
       const initialMode = service.isDarkMode();
       service.toggleTheme();
+
       expect(service.isDarkMode()).toBe(!initialMode);
     });
 
-    it('deve adicionar a classe "app-dark" ao HTML quando o modo escuro estiver ativo', () => {
+    it('deve atualizar o HTML e o localStorage ao ativar o modo escuro', () => {
+      // Forçamos a mudança para Dark se estiver Light
       if (!service.isDarkMode()) {
         service.toggleTheme();
       }
 
-      TestBed.flushEffects();
+      TestBed.flushEffects(); // Dispara o effect() do Signal
 
       expect(document.documentElement.classList.contains('app-dark')).toBe(true);
       expect(localStorageMock.setItem).toHaveBeenCalledWith('theme', 'dark');
     });
 
-    it('deve remover a classe "app-dark" ao voltar para o modo claro', () => {
+    it('deve atualizar o HTML e o localStorage ao ativar o modo claro', () => {
+      // Garante estado inicial escuro
       if (!service.isDarkMode()) {
         service.toggleTheme();
         TestBed.flushEffects();
       }
 
-      service.toggleTheme();
-
+      service.toggleTheme(); // Muda para claro
       TestBed.flushEffects();
 
       expect(document.documentElement.classList.contains('app-dark')).toBe(false);

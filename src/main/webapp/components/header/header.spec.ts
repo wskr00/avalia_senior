@@ -4,27 +4,34 @@ import { Header } from './header';
 import { HeaderService } from '@/services/header';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
-import { signal, NO_ERRORS_SCHEMA } from '@angular/core';
+import { signal, Component } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { describe, it, expect, beforeEach, beforeAll, vi } from 'vitest';
+// 'beforeAll' e 'vi' (para matchMedia) removidos pois agora são globais
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
+// 1. Mocks para os componentes filhos (Stubs)
+// Garantem que o template seja validado sem carregar dependências pesadas
+@Component({
+  selector: 'app-back-button',
+  standalone: true,
+  template: '<button>Mock Back Button</button>',
+})
+class MockBackButton {}
+
+@Component({
+  selector: 'app-theme-toggle',
+  standalone: true,
+  template: '<div>Mock Theme Toggle</div>',
+})
+class MockThemeToggle {}
 
 describe('Header (Componente)', () => {
   let component: Header;
   let fixture: ComponentFixture<Header>;
 
+  // Sinais mockados para controle de estado reativo
   const titleMock = signal('Título Inicial');
   const showBackButtonMock = signal(true);
-
-  beforeAll(() => {
-    vi.stubGlobal(
-      'matchMedia',
-      vi.fn().mockReturnValue({
-        matches: false,
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-      })
-    );
-  });
 
   beforeEach(async () => {
     const mockHeaderService = {
@@ -41,12 +48,18 @@ describe('Header (Componente)', () => {
           theme: { preset: Aura },
         }),
       ],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+      // SEM NO_ERRORS_SCHEMA: O Angular validará app-back-button e app-theme-toggle
+    })
+      .overrideComponent(Header, {
+        // Substituímos os componentes reais pelos Mocks no template do Header
+        add: { imports: [MockBackButton, MockThemeToggle] },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(Header);
     component = fixture.componentInstance;
 
+    // Resetamos os sinais para o estado inicial antes de cada teste
     titleMock.set('Título Inicial');
     showBackButtonMock.set(true);
 
@@ -61,6 +74,7 @@ describe('Header (Componente)', () => {
     const h1 = fixture.debugElement.query(By.css('h1')).nativeElement;
     expect(h1.textContent).toContain('Título Inicial');
 
+    // Alteração do sinal deve refletir no DOM após detectChanges
     titleMock.set('Nova Escala');
     fixture.detectChanges();
 
@@ -71,7 +85,8 @@ describe('Header (Componente)', () => {
     showBackButtonMock.set(true);
     fixture.detectChanges();
 
-    const backButton = fixture.debugElement.query(By.css('app-back-button'));
+    // By.directive é mais seguro que By.css para componentes
+    const backButton = fixture.debugElement.query(By.directive(MockBackButton));
     expect(backButton).not.toBeNull();
   });
 
@@ -79,12 +94,12 @@ describe('Header (Componente)', () => {
     showBackButtonMock.set(false);
     fixture.detectChanges();
 
-    const backButton = fixture.debugElement.query(By.css('app-back-button'));
+    const backButton = fixture.debugElement.query(By.directive(MockBackButton));
     expect(backButton).toBeNull();
   });
 
   it('deve sempre renderizar o componente de alternância de tema (app-theme-toggle)', () => {
-    const themeToggle = fixture.debugElement.query(By.css('app-theme-toggle'));
+    const themeToggle = fixture.debugElement.query(By.directive(MockThemeToggle));
     expect(themeToggle).not.toBeNull();
   });
 });

@@ -1,26 +1,49 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { BackButton } from './back-button';
 import { provideRouter } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
-import { describe, it, expect, beforeEach, beforeAll, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
+
+// 1. Importações do CDK e definição do Harness Customizado
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { HarnessLoader, ComponentHarness } from '@angular/cdk/testing';
+
+/**
+ * Harness para o p-button.
+ * Centraliza a lógica de busca de atributos e estados do PrimeNG.
+ */
+class PrimeButtonHarness extends ComponentHarness {
+  static hostSelector = 'p-button';
+
+  async getAriaLabel() {
+    const host = await this.host();
+    return (await host.getAttribute('aria-label')) || (await host.getAttribute('arialabel'));
+  }
+
+  async getRouterLink() {
+    const host = await this.host();
+    return host.getAttribute('routerLink');
+  }
+
+  async hasClass(className: string) {
+    const host = await this.host();
+    return host.hasClass(className);
+  }
+
+  async getIcon() {
+    const host = await this.host();
+    return host.getAttribute('icon');
+  }
+}
 
 describe('BackButton', () => {
   let component: BackButton;
   let fixture: ComponentFixture<BackButton>;
+  let loader: HarnessLoader;
 
-  beforeAll(() => {
-    vi.stubGlobal(
-      'matchMedia',
-      vi.fn().mockReturnValue({
-        matches: false,
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-      })
-    );
-  });
+  // O matchMedia foi removido daqui pois agora reside no test-setup.ts global
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -35,6 +58,7 @@ describe('BackButton', () => {
 
     fixture = TestBed.createComponent(BackButton);
     component = fixture.componentInstance;
+    loader = TestbedHarnessEnvironment.loader(fixture);
     fixture.detectChanges();
   });
 
@@ -42,29 +66,26 @@ describe('BackButton', () => {
     expect(component).toBeTruthy();
   });
 
-  it('deve apontar para a rota raiz ("/")', () => {
-    const pButton = fixture.debugElement.query(By.css('p-button'));
-    expect(pButton.attributes['routerLink']).toBe('/');
+  it('deve apontar para a rota raiz ("/")', async () => {
+    const button = await loader.getHarness(PrimeButtonHarness);
+    expect(await button.getRouterLink()).toBe('/');
   });
 
-  it('deve ter o aria-label correto para leitores de tela', () => {
-    const pButton = fixture.debugElement.query(By.css('p-button')).componentInstance;
-
-    const label = typeof pButton.ariaLabel === 'function' ? pButton.ariaLabel() : pButton.ariaLabel;
-    expect(label).toBe('Voltar para a página anterior');
+  it('deve ter o aria-label correto para leitores de tela', async () => {
+    const button = await loader.getHarness(PrimeButtonHarness);
+    expect(await button.getAriaLabel()).toBe('Voltar para a página anterior');
   });
 
-  it('deve renderizar com o ícone de seta para a esquerda e estilo correto', () => {
-    const pButton = fixture.debugElement.query(By.css('p-button')).componentInstance;
+  it('deve renderizar com o ícone de seta para a esquerda e estilo correto', async () => {
+    const button = await loader.getHarness(PrimeButtonHarness);
 
-    const icon = typeof pButton.icon === 'function' ? pButton.icon() : pButton.icon;
-    const severity = typeof pButton.severity === 'function' ? pButton.severity() : pButton.severity;
-    const isText = typeof pButton.text === 'function' ? pButton.text() : pButton.text;
-    const isRounded = typeof pButton.rounded === 'function' ? pButton.rounded() : pButton.rounded;
+    // Verificamos o ícone via atributo
+    expect(await button.getIcon()).toBe('pi pi-arrow-left');
 
-    expect(icon).toBe('pi pi-arrow-left');
-    expect(severity).toBe('secondary');
-    expect(isText).toBe(true);
-    expect(isRounded).toBe(true);
+    // Verificamos o estilo PrimeNG via classes CSS que o componente aplica
+    // Isso é mais robusto do que acessar a instância do componente
+    expect(await button.hasClass('p-button-secondary')).toBe(true);
+    expect(await button.hasClass('p-button-text')).toBe(true);
+    expect(await button.hasClass('p-button-rounded')).toBe(true);
   });
 });
