@@ -9,7 +9,7 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { CardModule } from 'primeng/card';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ScaleDefinition, EvaluationQuestion } from '@/interfaces/evaluation';
+import { ScaleDefinition, EvaluationQuestion, QuestionOption } from '@/interfaces/evaluation';
 
 import { BasicInfo } from './basic-info/basic-info';
 import { EvaluationResult } from './evaluation-result/evaluation-result';
@@ -80,7 +80,10 @@ describe('EvaluationForm (Componente)', () => {
   };
 
   const mockQuestions: EvaluationQuestion[] = [
-    { title: 'Pergunta 1', options: [{ label: 'Opt 1', value: 0 }] },
+    {
+      title: 'Pergunta 1',
+      options: [{ label: 'Opção Zero', value: 0 }],
+    },
   ];
 
   beforeEach(async () => {
@@ -141,7 +144,9 @@ describe('EvaluationForm (Componente)', () => {
       age: 45,
       date: new Date(),
     });
-    formService.responses.at(0).setValue(0);
+
+    const selectedOption: QuestionOption = mockQuestions[0].options[0];
+    formService.responses.at(0).setValue(selectedOption);
 
     fixture.detectChanges();
 

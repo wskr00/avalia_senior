@@ -1,16 +1,16 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Home } from './home';
 import { HeaderService } from '@/services/header';
+import { signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import Aura from '@primeuix/themes/aura';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeuix/themes/aura';
-import { signal } from '@angular/core';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { Home } from './home';
 
+import { ComponentHarness, HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { HarnessLoader, ComponentHarness } from '@angular/cdk/testing';
 
 class PrimeButtonHarness extends ComponentHarness {
   static hostSelector = 'p-button';
@@ -54,7 +54,10 @@ describe('Home (Componente)', () => {
       imports: [Home, ButtonModule, CardModule],
       providers: [
         { provide: HeaderService, useValue: headerServiceMock },
-        provideRouter([{ path: 'lawton', component: class {} }]),
+        provideRouter([
+          { path: 'lawton', component: class {} },
+          { path: 'katz', component: class {} },
+        ]),
         providePrimeNG({ theme: { preset: Aura } }),
       ],
     }).compileComponents();
@@ -91,12 +94,27 @@ describe('Home (Componente)', () => {
     expect(await lawtonBtn?.getRouterLink()).toBe('/lawton');
   });
 
+  it('deve ter o link correto para o Índice de Katz', async () => {
+    const buttons = await loader.getAllHarnesses(PrimeButtonHarness);
+
+    let katzBtn;
+    for (const btn of buttons) {
+      if ((await btn.getLabel()) === 'Índice de Katz') {
+        katzBtn = btn;
+        break;
+      }
+    }
+
+    expect(katzBtn).toBeDefined();
+    expect(await katzBtn?.getRouterLink()).toBe('/katz');
+  });
+
   it('deve ter aria-labels descritivos em todos os botões de escala', async () => {
     const buttons = await loader.getAllHarnesses(PrimeButtonHarness);
 
     const expectedLabels = [
       'Acessar Escala de Lawton',
-      'Acessar Escala de Katz',
+      'Acessar Índice de Katz',
       'Acessar Outra Avaliação',
     ];
 

@@ -16,6 +16,7 @@ import {
   EvaluationQuestion,
   EvaluationResult as IEvaluationResult,
   ScaleDefinition,
+  QuestionOption,
 } from '@/interfaces/evaluation';
 import { EvaluationCalculatorService } from '@/services/evaluation-calculator';
 import { EvaluationFormService } from '@/services/evaluation-form';
@@ -71,8 +72,10 @@ export class EvaluationForm implements OnInit {
     const form = this.evaluationFormService.form;
 
     if (form.valid) {
-      const responses = form.getRawValue().responses;
-      const result = this.calculatorService.calculate(this.config(), responses);
+      const rawResponses = form.getRawValue().responses as QuestionOption[];
+      const numericResponses = rawResponses.map((option) => option.value);
+
+      const result = this.calculatorService.calculate(this.config(), numericResponses);
 
       this.calculationResult.set(result);
       this.showResult.set(true);
