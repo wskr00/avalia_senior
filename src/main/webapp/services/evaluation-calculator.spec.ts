@@ -16,6 +16,16 @@ describe('EvaluationCalculatorService', () => {
     ],
   };
 
+  const exactValueConfig: ScaleDefinition = {
+    id: 'exact-scale',
+    baseline: 0,
+    ranges: [
+      { min: 0, label: 'Nulo' },
+      { min: 1, max: 5, label: 'Baixo' },
+      { min: 10, label: 'Nota Dez' },
+    ],
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [EvaluationCalculatorService],
@@ -51,6 +61,31 @@ describe('EvaluationCalculatorService', () => {
 
     const result21 = service.calculate(mockConfig, [-6]);
     expect(result21.interpretation).toBe('Independente');
+  });
+
+  describe('Suporte a Valores Exatos (max opcional)', () => {
+    it('deve identificar corretamente um valor exato quando max está ausente', () => {
+      const result = service.calculate(exactValueConfig, [0]);
+      expect(result.score).toBe(0);
+      expect(result.interpretation).toBe('Nulo');
+    });
+
+    it('deve identificar o limite superior exato', () => {
+      const result = service.calculate(exactValueConfig, [10]);
+      expect(result.score).toBe(10);
+      expect(result.interpretation).toBe('Nota Dez');
+    });
+
+    it('deve continuar funcionando para intervalos normais na mesma configuração', () => {
+      const result = service.calculate(exactValueConfig, [3]);
+      expect(result.score).toBe(3);
+      expect(result.interpretation).toBe('Baixo');
+    });
+
+    it('deve retornar "fora da faixa" se o valor for 9 (entre um intervalo e um valor exato)', () => {
+      const result = service.calculate(exactValueConfig, [9]);
+      expect(result.interpretation).toBe('Resultado fora da faixa de referência');
+    });
   });
 
   it('deve tratar null ou undefined como 0 e não quebrar o cálculo', () => {

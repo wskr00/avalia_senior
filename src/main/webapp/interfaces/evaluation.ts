@@ -17,7 +17,7 @@ export interface EvaluationBasicInfo {
 
 export interface EvaluationRange {
   min: number;
-  max: number;
+  max?: number;
   label: string;
 }
 

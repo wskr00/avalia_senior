@@ -12,10 +12,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader, ComponentHarness } from '@angular/cdk/testing';
 
-/**
- * Harness customizado para o p-button.
- * Abstrai a estrutura interna do PrimeNG.
- */
 class PrimeButtonHarness extends ComponentHarness {
   static hostSelector = 'p-button';
 

@@ -9,11 +9,6 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader, ComponentHarness } from '@angular/cdk/testing';
 
-/**
- * Harness para o p-button.
- * Ajustado para detectar classes CSS em elementos internos (button ou a),
- * o que é comum quando o PrimeNG usa routerLink.
- */
 class PrimeButtonHarness extends ComponentHarness {
   static hostSelector = 'p-button';
 

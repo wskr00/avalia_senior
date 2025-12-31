@@ -15,7 +15,16 @@ export class PdfGeneratorService {
     config: ScaleDefinition
   ) {
     const referencesStr = config.ranges
-      .map((r) => `• ${r.min}-${r.max} pts: ${r.label}`)
+      .map((r) => {
+        const isRange = r.max !== undefined && r.max !== r.min;
+
+        if (isRange) {
+          return `• ${r.min}-${r.max} pts: ${r.label}`;
+        }
+
+        const unit = r.min === 1 ? 'pt' : 'pts';
+        return `• ${r.min} ${unit}: ${r.label}`;
+      })
       .join('\n');
 
     const template: Template = {

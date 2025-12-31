@@ -10,7 +10,10 @@ export class EvaluationCalculatorService {
 
     const totalScore = config.baseline + sum;
 
-    const range = config.ranges.find((r) => totalScore >= r.min && totalScore <= r.max);
+    const range = config.ranges.find((r) => {
+      const maxLimit = r.max ?? r.min;
+      return totalScore >= r.min && totalScore <= maxLimit;
+    });
 
     return {
       score: totalScore,

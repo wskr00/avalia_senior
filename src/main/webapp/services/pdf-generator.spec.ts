@@ -62,6 +62,32 @@ describe('PdfGeneratorService', () => {
     expect(service).toBeTruthy();
   });
 
+  it('deve formatar corretamente a tabela de referências para valores exatos e intervalos', async () => {
+    const mixedConfig: ScaleDefinition = {
+      id: 'mixed-scale',
+      baseline: 0,
+      ranges: [
+        { min: 0, label: 'Zero absoluto' },
+        { min: 1, label: 'Ponto único' },
+        { min: 2, max: 5, label: 'Intervalo' },
+        { min: 10, label: 'Dez pontos' },
+      ],
+    };
+
+    await service.generateEvaluationPdf('Teste Misto', mockFormValues, mockResult, mixedConfig);
+
+    const callArgs = vi.mocked(pdfmeGenerator.generate).mock.calls[0][0];
+    const refs = (callArgs.inputs[0]['tabelaReferencias'] || '').toString();
+
+    expect(refs).toContain('• 0 pts: Zero absoluto');
+
+    expect(refs).toContain('• 1 pt: Ponto único');
+
+    expect(refs).toContain('• 2-5 pts: Intervalo');
+
+    expect(refs).toContain('• 10 pts: Dez pontos');
+  });
+
   it('deve chamar a função generate com os dados da escala e referências', async () => {
     const scaleTitle = 'Escala de Lawton';
     await service.generateEvaluationPdf(scaleTitle, mockFormValues, mockResult, mockConfig);
