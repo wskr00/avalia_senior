@@ -5,32 +5,55 @@
   [draggable]="false"
   [resizable]="false"
   [closable]="true"
-  styleClass="w-[95%] md:w-full max-w-md border-round-xl"
+  [showHeader]="true"
+  aria-labelledby="modal-result-title"
+  class="w-[95%] md:w-full max-w-md border-round-xl"
 >
-  <div class="flex flex-col items-center p-4 md:p-6 text-center">
-    <div class="mb-6 md:mb-8">
-      <span class="block text-xs md:text-sm uppercase tracking-wider font-semibold mb-2"
-        >Pontuação</span
-      >
-      <span class="text-3xl md:text-4xl lg:text-5xl font-extrabold">{{ result()?.score }}</span>
+  <ng-template pTemplate="header">
+    <div class="grow">
+      <span id="modal-result-title" class="sr-only">Resultado da Avaliação</span>
     </div>
+  </ng-template>
 
-    <div class="mb-6 md:mb-8">
-      <span class="block text-xs md:text-sm uppercase tracking-wider font-semibold mb-2"
-        >Resultado</span
+  <div class="flex flex-col items-center p-2 md:p-4 text-center">
+    <section class="mb-8 w-full" aria-labelledby="score-heading">
+      <h2
+        id="score-heading"
+        class="text-xs md:text-sm uppercase tracking-widest font-bold mb-3 text-muted-color"
       >
-      <span class="text-lg md:text-xl lg:text-2xl font-medium">{{ result()?.interpretation }}</span>
-    </div>
+        Pontuação Total
+      </h2>
+      <div class="flex items-center justify-center">
+        <span
+          class="text-5xl md:text-6xl font-black bg-primary/5 w-24 h-24 flex items-center justify-center rounded-full shadow-sm"
+        >
+          {{ result()?.score }}
+        </span>
+      </div>
+    </section>
 
-    <div class="flex flex-col gap-3 w-full">
+    <section class="mb-8 p-4 bg-emphasis rounded-2xl w-full" aria-labelledby="result-heading">
+      <h2
+        id="result-heading"
+        class="text-xs md:text-sm uppercase tracking-widest font-bold mb-2 text-muted-color"
+      >
+        Classificação
+      </h2>
+      <p class="text-xl md:text-2xl font-bold text-color leading-tight">
+        {{ result()?.interpretation }}
+      </p>
+    </section>
+
+    <footer class="w-full">
       <p-button
         label="Baixar PDF"
         icon="pi pi-file-pdf"
         [fluid]="true"
         size="large"
         (onClick)="downloadPdf()"
-        class="text-sm md:text-base result"
+        class="py-4 shadow-md result"
+        ariaLabel="Baixar resultado em PDF"
       ></p-button>
-    </div>
+    </footer>
   </div>
 </p-dialog>

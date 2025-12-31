@@ -15,14 +15,21 @@
     >
       <ng-template pTemplate="header">
         <div class="px-4 md:px-6 pt-4 md:pt-5">
-          <h3 class="text-base md:text-lg lg:text-xl font-semibold leading-relaxed text-color">
+          <h3
+            [id]="'q-title-' + qIndex"
+            class="text-base md:text-lg lg:text-xl font-semibold leading-relaxed text-color"
+          >
             {{ question.title }}
           </h3>
           <div class="h-px w-full bg-surface-200 dark:bg-surface-700 mt-3"></div>
         </div>
       </ng-template>
 
-      <div class="flex flex-col gap-1">
+      <div
+        class="flex flex-col gap-1"
+        role="radiogroup"
+        [attr.aria-labelledby]="'q-title-' + qIndex"
+      >
         @for (option of question.options; track $index; let oIndex = $index) {
         <div
           pRipple
@@ -51,7 +58,11 @@
     }
   </div>
   } @else {
-  <div class="flex flex-col items-center justify-center p-12 md:p-20 gap-4">
+  <div
+    class="flex flex-col items-center justify-center p-12 md:p-20 gap-4"
+    role="status"
+    aria-live="polite"
+  >
     <i class="pi pi-spin pi-spinner text-primary text-3xl md:text-4xl"></i>
     <p class="text-sm md:text-base font-medium text-muted-color animate-pulse">
       Carregando avaliação...

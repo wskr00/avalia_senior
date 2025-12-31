@@ -1,12 +1,24 @@
 <div [formGroup]="evaluationFormService.form">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-y-6" formGroupName="basicInfo">
     <p-floatLabel variant="on" class="text-sm md:text-base">
-      <input pInputText id="doctorName" formControlName="doctorName" [fluid]="true" />
+      <input
+        pInputText
+        id="doctorName"
+        formControlName="doctorName"
+        [fluid]="true"
+        aria-required="true"
+      />
       <label for="doctorName">Nome do Médico</label>
     </p-floatLabel>
 
     <p-floatLabel variant="on" class="text-sm md:text-base">
-      <input pInputText id="patientName" formControlName="patientName" [fluid]="true" />
+      <input
+        pInputText
+        id="patientName"
+        formControlName="patientName"
+        [fluid]="true"
+        aria-required="true"
+      />
       <label for="patientName">Nome do Paciente</label>
     </p-floatLabel>
 
@@ -17,6 +29,8 @@
         [min]="0"
         [max]="150"
         [fluid]="true"
+        [ariaRequired]="true"
+        ariaLabel="Idade do Paciente"
       ></p-inputNumber>
       <label for="age">Idade do Paciente</label>
     </p-floatLabel>
@@ -28,8 +42,11 @@
         dateFormat="dd/mm/yy"
         [showIcon]="true"
         [fluid]="true"
+        [required]="true"
+        [ariaRequired]="true"
+        ariaLabelledBy="label-date"
       ></p-datepicker>
-      <label for="date">Data da Avaliação</label>
+      <label for="date" id="label-date">Data da Avaliação</label>
     </p-floatLabel>
   </div>
 </div>

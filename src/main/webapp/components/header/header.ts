@@ -1,5 +1,5 @@
+import { HeaderService } from '@/services/header';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { HeaderService } from '../../services/header';
 import { BackButton } from './back-button/back-button';
 import { ThemeToggle } from './theme-toggle/theme-toggle';
 

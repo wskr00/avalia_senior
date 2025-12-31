@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ThemeService } from '../../../services/theme';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ThemeService } from '@/services/theme';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
@@ -11,4 +11,8 @@ import { ButtonModule } from 'primeng/button';
 })
 export class ThemeToggle {
   protected themeService = inject(ThemeService);
+
+  protected ariaLabel = computed(() =>
+    this.themeService.isDarkMode() ? 'Alternar para tema claro' : 'Alternar para tema escuro'
+  );
 }

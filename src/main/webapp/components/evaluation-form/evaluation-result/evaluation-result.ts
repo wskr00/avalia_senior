@@ -1,12 +1,12 @@
-import { Component, inject, input, model, ChangeDetectionStrategy } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
 import {
   EvaluationBasicInfo,
   EvaluationResult as IEvaluationResult,
   ScaleDefinition,
-} from '../../../interfaces/evaluation';
-import { PdfGeneratorService } from '../../../services/pdf-generator';
+} from '@/interfaces/evaluation';
+import { PdfGeneratorService } from '@/services/pdf-generator';
+import { ChangeDetectionStrategy, Component, inject, input, model } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-evaluation-result',

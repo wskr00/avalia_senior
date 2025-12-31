@@ -1,8 +1,8 @@
+import { EvaluationBasicInfo, EvaluationResult, ScaleDefinition } from '@/interfaces/evaluation';
 import { Injectable } from '@angular/core';
+import { CUSTOM_A4_PDF, Template } from '@pdfme/common';
 import { generate } from '@pdfme/generator';
 import { text } from '@pdfme/schemas';
-import { CUSTOM_A4_PDF, Template } from '@pdfme/common';
-import { ScaleDefinition, EvaluationResult, EvaluationBasicInfo } from '../interfaces/evaluation';
 
 @Injectable({
   providedIn: 'root',

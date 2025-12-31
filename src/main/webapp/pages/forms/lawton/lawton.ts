@@ -1,8 +1,7 @@
 import { EvaluationForm } from '@/components/evaluation-form/evaluation-form';
-import { ScaleDefinition } from '@/interfaces/evaluation';
+import { EvaluationQuestion, ScaleDefinition } from '@/interfaces/evaluation';
 import { HeaderService } from '@/services/header';
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
-import { EvaluationQuestion } from '../../../interfaces/evaluation';
 
 @Component({
   selector: 'app-lawton',
