@@ -203,4 +203,63 @@ describe('EvaluationForm (Componente)', () => {
     expect(imgDirective.ngSrc).toBe('assets/teste.jpg');
     expect(imgElement.attributes['alt']).toBe('Imagem de referência para a pergunta');
   });
+
+  it('deve agrupar questões com o mesmo groupTitle em um único card e renderizar subenunciados', async () => {
+    const groupedQuestions: EvaluationQuestion[] = [
+      {
+        groupTitle: 'Capacidade Funcional',
+        title: 'Preparar refeições',
+        options: [{ label: 'Independente', value: 1 }],
+      },
+      {
+        groupTitle: 'Capacidade Funcional',
+        title: 'Fazer compras',
+        options: [{ label: 'Dependente', value: 0 }],
+      },
+      {
+        title: 'Pergunta Isolada',
+        options: [{ label: 'Opção única', value: 1 }],
+      },
+    ];
+
+    fixture.componentRef.setInput('questions', groupedQuestions);
+    formService.initializeResponses(3);
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const allCards = fixture.debugElement.queryAll(By.css('p-card'));
+
+    expect(allCards.length).toBe(3);
+
+    const groupCard = allCards[1];
+    const groupHeader = groupCard.query(By.css('h3')).nativeElement.textContent;
+    expect(groupHeader).toContain('Capacidade Funcional');
+
+    const subTitles = groupCard.queryAll(By.css('.font-bold'));
+    expect(subTitles.length).toBe(2);
+    expect(subTitles[0].nativeElement.textContent).toContain('Preparar refeições');
+    expect(subTitles[1].nativeElement.textContent).toContain('Fazer compras');
+
+    const loneCard = allCards[2];
+    const loneHeader = loneCard.query(By.css('h3')).nativeElement.textContent;
+    expect(loneHeader).toContain('Pergunta Isolada');
+  });
+
+  it('deve renderizar divisores entre subquestões mas não após a última do grupo', async () => {
+    const questions: EvaluationQuestion[] = [
+      { groupTitle: 'G1', title: 'Q1', options: [] },
+      { groupTitle: 'G1', title: 'Q2', options: [] },
+    ];
+
+    fixture.componentRef.setInput('questions', questions);
+    formService.initializeResponses(2);
+    fixture.detectChanges();
+
+    const groupCard = fixture.debugElement.queryAll(By.css('p-card'))[1];
+
+    const separators = groupCard.queryAll(By.css('.h-px.w-full.bg-surface-200'));
+
+    expect(separators.length).toBe(1);
+  });
 });

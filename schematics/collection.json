@@ -2,7 +2,7 @@
     "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
     "schematics": {
         "eform": {
-            "description": "Gera um novo formulário de escala geriátrica, configura rotas e atualiza a Home.",
+            "description": "Gera um novo formulário de escala de avaliação, configura rotas e atualiza a Home.",
             "factory": "./eform/index#eform",
             "schema": "./eform/schema.json"
         }

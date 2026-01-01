@@ -5,11 +5,18 @@ export interface QuestionOption {
 
 export interface EvaluationQuestion {
   title: string;
+  groupTitle?: string;
   options: QuestionOption[];
   image?: string;
   imageWidth?: number;
   imageHeight?: number;
   imageAlt?: string;
+}
+
+export interface QuestionGroup {
+  groupTitle?: string;
+  isGroup: boolean;
+  questions: { data: EvaluationQuestion; originalIndex: number }[];
 }
 
 export interface EvaluationBasicInfo {

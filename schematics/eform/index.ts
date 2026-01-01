@@ -65,7 +65,7 @@ function updateHomeHTML(options: any): Rule {
 
     const dasherized = strings.dasherize(options.name);
 
-    const newButton = `        <li class="w-full">
+    const newButton = `  <li class="w-full">
           <p-button
             label="${options.label}"
             severity="secondary"

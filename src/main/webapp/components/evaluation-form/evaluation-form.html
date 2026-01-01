@@ -9,73 +9,80 @@
 
   @if (evaluationFormService.responses.length === questions().length) {
   <div formArrayName="responses" class="flex flex-col gap-6">
-    @for (question of questions(); track $index; let qIndex = $index) {
+    @for (group of groupedQuestions(); track $index) {
     <p-card
-      class="shadow-sm border border-surface transition-shadow duration-300 hover:shadow-md rounded-2xl"
+      class="shadow-sm border border-surface transition-shadow duration-300 hover:shadow-md rounded-2xl overflow-hidden"
     >
       <ng-template pTemplate="header">
         <div class="px-4 md:px-6 pt-4 md:pt-5">
-          <h3
-            [id]="'q-title-' + qIndex"
-            class="text-base md:text-lg lg:text-xl font-semibold leading-relaxed text-color"
-          >
-            {{ question.title }}
+          <h3 class="text-base md:text-lg lg:text-xl font-semibold leading-relaxed text-color">
+            {{ group.isGroup ? group.groupTitle : group.questions[0].data.title }}
           </h3>
           <div class="h-px w-full bg-surface-200 dark:bg-surface-700 mt-3"></div>
         </div>
       </ng-template>
 
-      @if (question.image) {
-      <div class="px-4 md:px-6 pb-2 md:pb-3 flex justify-center">
-        <img
-          [ngSrc]="question.image"
-          [width]="question.imageWidth || 300"
-          [height]="question.imageHeight || 200"
-          class="w-full max-w-xl h-auto rounded-lg object-cover shadow-sm border border-surface"
-          [attr.alt]="question.imageAlt || 'Imagem de referência para a pergunta'"
-          priority="true"
-        />
-      </div>
-      }
-
-      <div
-        class="flex flex-col gap-1"
-        role="radiogroup"
-        [attr.aria-labelledby]="'q-title-' + qIndex"
-      >
-        @for (option of question.options; track $index; let oIndex = $index) {
-        <div
-          pRipple
-          class="flex items-center gap-3 p-3 rounded-xl transition-all duration-200 cursor-pointer group hover:bg-emphasis"
-          (click)="radioButton.select($event)"
-        >
-          <p-radioButton
-            #radioButton
-            [name]="'group-' + qIndex"
-            [value]="option"
-            [formControlName]="qIndex"
-            [inputId]="'q' + qIndex + 'opt' + oIndex"
-            class="scale-110"
-          ></p-radioButton>
-
-          <label
-            [for]="'q' + qIndex + 'opt' + oIndex"
-            class="cursor-pointer text-sm md:text-base font-medium text-color w-full select-none"
-          >
-            {{ option.label }}
-          </label>
+      <div class="flex flex-col">
+        @for (qEntry of group.questions; track qEntry.originalIndex; let qIndex = $index; let
+        lastQuestion = $last) { @if (group.isGroup) {
+        <div class="px-4 md:px-6 py-4">
+          <p class="text-sm md:text-base font-bold text-color">
+            {{ qEntry.data.title }}
+          </p>
+        </div>
+        <div class="h-px w-full bg-surface-100 dark:bg-surface-800"></div>
+        } @if (qEntry.data.image) {
+        <div class="px-4 md:px-6 py-4 flex justify-center">
+          <img
+            [ngSrc]="qEntry.data.image"
+            [width]="qEntry.data.imageWidth || 300"
+            [height]="qEntry.data.imageHeight || 200"
+            class="w-full max-w-xl h-auto rounded-lg object-cover shadow-sm border border-surface"
+            [attr.alt]="qEntry.data.imageAlt || 'Imagem de referência'"
+            priority="true"
+          />
         </div>
         }
+
+        <div
+          class="flex flex-col gap-1 px-2 py-3"
+          role="radiogroup"
+          [attr.aria-label]="qEntry.data.title"
+        >
+          @for (option of qEntry.data.options; track $index; let oIndex = $index) {
+          <div
+            pRipple
+            class="flex items-center gap-3 p-3 rounded-xl transition-all duration-200 cursor-pointer group hover:bg-emphasis"
+            (click)="radioButton.select($event)"
+          >
+            <p-radioButton
+              #radioButton
+              [name]="'group-' + qEntry.originalIndex"
+              [value]="option"
+              [formControlName]="qEntry.originalIndex"
+              [inputId]="'q' + qEntry.originalIndex + 'opt' + oIndex"
+              class="scale-110"
+            ></p-radioButton>
+
+            <label
+              [for]="'q' + qEntry.originalIndex + 'opt' + oIndex"
+              class="cursor-pointer text-sm md:text-base font-medium text-color w-full select-none"
+            >
+              {{ option.label }}
+            </label>
+          </div>
+          }
+        </div>
+
+        @if (!lastQuestion) {
+        <div class="h-px w-full bg-surface-200 dark:bg-surface-700"></div>
+        } }
       </div>
     </p-card>
     }
   </div>
   } @else {
-  <div
-    class="flex flex-col items-center justify-center p-12 md:p-20 gap-4"
-    role="status"
-    aria-live="polite"
-  >
+  <div class="flex flex-col items-center justify-center p-12 md:p-20 gap-4">
     <i class="pi pi-spin pi-spinner text-primary text-3xl md:text-4xl"></i>
     <p class="text-sm md:text-base font-medium text-muted-color animate-pulse">
       Carregando avaliação...

@@ -7,7 +7,7 @@
         "name": {
             "type": "string",
             "description": "Nome interno/técnico usado para arquivos, pastas e rotas (ex: lawton, katz).",
-            "x-prompt": "Qual o nome técnico da escala (ex: moca)?",
+            "x-prompt": "Qual o nome técnico da escala (ex: lawton)?",
             "pattern": "^[a-zA-Z][a-zA-Z0-9-]*$"
         },
         "label": {

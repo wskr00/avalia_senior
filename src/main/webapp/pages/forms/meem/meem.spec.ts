@@ -64,8 +64,7 @@ describe('Meem (Componente)', () => {
   it('deve conter a configuração inicial correta da escala de meem', () => {
     const config = component['meem_config']();
     expect(config.id).toBe('meem');
-    // Baseline padrão 0 (ajustar conforme a escala se necessário)
-    expect(config.baseline).toBe(0);
+    expect(config.baseline).toBe(30);
   });
 
   it('deve passar a configuração e as perguntas para o app-evaluation-form', () => {
