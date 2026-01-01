@@ -1,22 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EvaluationForm } from './evaluation-form';
-import { EvaluationFormService as FormService } from '@/services/evaluation-form';
+import { EvaluationQuestion, QuestionOption, ScaleDefinition } from '@/interfaces/evaluation';
 import { EvaluationCalculatorService } from '@/services/evaluation-calculator';
+import { EvaluationFormService as FormService } from '@/services/evaluation-form';
 import { HeaderService } from '@/services/header';
+import { NgOptimizedImage } from '@angular/common';
+import { Component, input, model, output, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { signal, Component, input, output, model } from '@angular/core';
-import { providePrimeNG } from 'primeng/config';
+import { By } from '@angular/platform-browser';
 import Aura from '@primeuix/themes/aura';
 import { CardModule } from 'primeng/card';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { ScaleDefinition, EvaluationQuestion, QuestionOption } from '@/interfaces/evaluation';
+import { providePrimeNG } from 'primeng/config';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { EvaluationForm } from './evaluation-form';
 
 import { BasicInfo } from './basic-info/basic-info';
 import { EvaluationResult } from './evaluation-result/evaluation-result';
 import { SubmitButton } from './submit-button/submit-button';
 
+import { ComponentHarness, HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { HarnessLoader, ComponentHarness } from '@angular/cdk/testing';
 
 class SubmitButtonHarness extends ComponentHarness {
   static hostSelector = 'app-submit-button';
@@ -176,5 +178,29 @@ describe('EvaluationForm (Componente)', () => {
     fixture.detectChanges();
 
     expect(spyInit).toHaveBeenCalledWith(2);
+  });
+
+  it('deve renderizar a imagem da questão quando a URL da imagem for fornecida', async () => {
+    const questionsWithImage: EvaluationQuestion[] = [
+      {
+        title: 'Pergunta com Imagem',
+        image: 'assets/teste.jpg',
+        imageWidth: 500,
+        imageHeight: 300,
+        options: [{ label: 'Opção 1', value: 1 }],
+      },
+    ];
+
+    fixture.componentRef.setInput('questions', questionsWithImage);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const imgElement = fixture.debugElement.query(By.css('img'));
+
+    const imgDirective = imgElement.injector.get(NgOptimizedImage);
+
+    expect(imgElement).toBeTruthy();
+    expect(imgDirective.ngSrc).toBe('assets/teste.jpg');
+    expect(imgElement.attributes['alt']).toBe('Imagem de referência para a pergunta');
   });
 });

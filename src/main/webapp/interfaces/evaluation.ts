@@ -6,6 +6,10 @@ export interface QuestionOption {
 export interface EvaluationQuestion {
   title: string;
   options: QuestionOption[];
+  image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+  imageAlt?: string;
 }
 
 export interface EvaluationBasicInfo {

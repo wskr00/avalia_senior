@@ -25,6 +25,7 @@ import { BasicInfo } from './basic-info/basic-info';
 import { EvaluationResult } from './evaluation-result/evaluation-result';
 import { SubmitButton } from './submit-button/submit-button';
 import { RippleModule } from 'primeng/ripple';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-evaluation-form',
@@ -36,6 +37,7 @@ import { RippleModule } from 'primeng/ripple';
     SubmitButton,
     EvaluationResult,
     RippleModule,
+    NgOptimizedImage,
   ],
   templateUrl: './evaluation-form.html',
   styleUrl: './evaluation-form.scss',
