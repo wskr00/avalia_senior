@@ -59,6 +59,8 @@ describe('Home (Componente)', () => {
           { path: 'katz', component: class {} },
           { path: 'gds', component: class {} },
           { path: 'meem', component: class {} },
+          { path: 'tinetti', component: class {} },
+          { path: 'sussurro', component: class {} },
         ]),
         providePrimeNG({ theme: { preset: Aura } }),
       ],
@@ -141,6 +143,36 @@ describe('Home (Componente)', () => {
     expect(await targetBtn?.getRouterLink()).toBe('/meem');
   });
 
+  it('deve ter o link correto para a Avaliação de Equilibrio e Marcha de Tinetti', async () => {
+    const buttons = await loader.getAllHarnesses(PrimeButtonHarness);
+
+    let targetBtn;
+    for (const btn of buttons) {
+      if ((await btn.getLabel()) === 'Avaliação de Equilibrio e Marcha de Tinetti') {
+        targetBtn = btn;
+        break;
+      }
+    }
+
+    expect(targetBtn).toBeDefined();
+    expect(await targetBtn?.getRouterLink()).toBe('/tinetti');
+  });
+
+  it('deve ter o link correto para a Teste do Sussurro', async () => {
+    const buttons = await loader.getAllHarnesses(PrimeButtonHarness);
+
+    let targetBtn;
+    for (const btn of buttons) {
+      if ((await btn.getLabel()) === 'Teste do Sussurro') {
+        targetBtn = btn;
+        break;
+      }
+    }
+
+    expect(targetBtn).toBeDefined();
+    expect(await targetBtn?.getRouterLink()).toBe('/sussurro');
+  });
+
   it('deve ter aria-labels descritivos em todos os botões de escala', async () => {
     const buttons = await loader.getAllHarnesses(PrimeButtonHarness);
 
@@ -149,6 +181,8 @@ describe('Home (Componente)', () => {
       'Acessar Índice de Katz',
       'Acessar Escala de Depressão Geriátrica',
       'Acessar Mini Exame do Estado Mental',
+      'Acessar Avaliação de Equilibrio e Marcha de Tinetti',
+      'Acessar Teste do Sussurro',
     ];
 
     for (let i = 0; i < buttons.length; i++) {

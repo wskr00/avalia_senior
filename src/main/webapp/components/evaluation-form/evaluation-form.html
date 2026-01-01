@@ -30,7 +30,7 @@
             {{ qEntry.data.title }}
           </p>
         </div>
-        <div class="h-px w-full bg-surface-100 dark:bg-surface-800"></div>
+        <div class="h-px w-full bg-surface-100 dark:bg-surface-800 mb-1 md:mb-2"></div>
         } @if (qEntry.data.image) {
         <div class="px-4 md:px-6 py-4 flex justify-center">
           <img
@@ -44,11 +44,7 @@
         </div>
         }
 
-        <div
-          class="flex flex-col gap-1 px-2 py-3"
-          role="radiogroup"
-          [attr.aria-label]="qEntry.data.title"
-        >
+        <div class="flex flex-col gap-1" role="radiogroup" [attr.aria-label]="qEntry.data.title">
           @for (option of qEntry.data.options; track $index; let oIndex = $index) {
           <div
             pRipple
@@ -75,7 +71,7 @@
         </div>
 
         @if (!lastQuestion) {
-        <div class="h-px w-full bg-surface-200 dark:bg-surface-700"></div>
+        <div class="h-px w-full bg-surface-200 dark:bg-surface-700 mt-1 md:mt-2"></div>
         } }
       </div>
     </p-card>

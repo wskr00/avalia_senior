@@ -27,7 +27,7 @@ export class Lawton implements OnInit {
 
   protected lawton_questions = signal<EvaluationQuestion[]>([
     {
-      title: 'O(a) Sr(a) consegue usar o telefone?',
+      title: '1. O(a) Sr(a) consegue usar o telefone?',
       options: [
         { label: 'Sem ajuda', value: 0 },
         { label: 'Com ajuda parcial', value: -1 },
@@ -36,7 +36,7 @@ export class Lawton implements OnInit {
     },
     {
       title:
-        'O(a) Sr(a) consegue ir a locais distantes, usando algum transporte, sem necessidade de planejamentos especiais?',
+        '2. O(a) Sr(a) consegue ir a locais distantes, usando algum transporte, sem necessidade de planejamentos especiais?',
       options: [
         { label: 'Sem ajuda', value: 0 },
         { label: 'Com ajuda parcial', value: -1 },
@@ -44,7 +44,7 @@ export class Lawton implements OnInit {
       ],
     },
     {
-      title: 'O(a) Sr(a) consegue fazer compras?',
+      title: '3. O(a) Sr(a) consegue fazer compras?',
       options: [
         { label: 'Sem ajuda', value: 0 },
         { label: 'Com ajuda parcial', value: -1 },
@@ -52,7 +52,7 @@ export class Lawton implements OnInit {
       ],
     },
     {
-      title: 'O(a) Sr(a) consegue preparar suas próprias refeições?',
+      title: '4. O(a) Sr(a) consegue preparar suas próprias refeições?',
       options: [
         { label: 'Sem ajuda', value: 0 },
         { label: 'Com ajuda parcial', value: -1 },
@@ -60,7 +60,7 @@ export class Lawton implements OnInit {
       ],
     },
     {
-      title: 'O(a) Sr(a) consegue arrumar a casa?',
+      title: '5. O(a) Sr(a) consegue arrumar a casa?',
       options: [
         { label: 'Sem ajuda', value: 0 },
         { label: 'Com ajuda parcial', value: -1 },
@@ -68,7 +68,7 @@ export class Lawton implements OnInit {
       ],
     },
     {
-      title: 'O(a) Sr(a) consegue fazer trabalhos manuais domésticos, como pequenos reparos?',
+      title: '6. O(a) Sr(a) consegue fazer trabalhos manuais domésticos, como pequenos reparos?',
       options: [
         { label: 'Sem ajuda', value: 0 },
         { label: 'Com ajuda parcial', value: -1 },
@@ -76,7 +76,7 @@ export class Lawton implements OnInit {
       ],
     },
     {
-      title: 'O(a) Sr(a) consegue lavar e passar sua roupa?',
+      title: '7. O(a) Sr(a) consegue lavar e passar sua roupa?',
       options: [
         { label: 'Sem ajuda', value: 0 },
         { label: 'Com ajuda parcial', value: -1 },
@@ -84,7 +84,7 @@ export class Lawton implements OnInit {
       ],
     },
     {
-      title: 'O(a) Sr(a) consegue tomar seus remédios na dose e horários corretos?',
+      title: '8. O(a) Sr(a) consegue tomar seus remédios na dose e horários corretos?',
       options: [
         { label: 'Sem ajuda', value: 0 },
         { label: 'Com ajuda parcial', value: -1 },
@@ -92,7 +92,7 @@ export class Lawton implements OnInit {
       ],
     },
     {
-      title: 'O(a) Sr(a) consegue cuidar de suas finanças?',
+      title: '9. O(a) Sr(a) consegue cuidar de suas finanças?',
       options: [
         { label: 'Sem ajuda', value: 0 },
         { label: 'Com ajuda parcial', value: -1 },

@@ -1,3 +1,5 @@
+import { Sussurro } from '@/pages/forms/sussurro/sussurro';
+import { Tinetti } from '@/pages/forms/tinetti/tinetti';
 import { Meem } from '@/pages/forms/meem/meem';
 import { Lawton } from '@/pages/forms/lawton/lawton';
 import { Home } from '@/pages/home/home';
@@ -11,4 +13,6 @@ export const routes: Routes = [
   { path: 'katz', component: Katz },
   { path: 'gds', component: Gds },
   { path: 'meem', component: Meem },
+  { path: 'tinetti', component: Tinetti },
+  { path: 'sussurro', component: Sussurro },
 ];
