@@ -1,0 +1,89 @@
+import { EvaluationForm } from '@/components/evaluation-form/evaluation-form';
+import { HeaderService } from '@/services/header';
+import { Component, input, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
+import Aura from '@primeuix/themes/aura';
+import { providePrimeNG } from 'primeng/config';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { <%= classify(name) %> } from './<%= dasherize(name) %>';
+
+@Component({
+  selector: 'app-evaluation-form',
+  template: '<div>Mock Evaluation Form</div>',
+})
+class MockEvaluationForm {
+  config = input<any>();
+  questions = input<any[]>();
+}
+
+describe('<%= classify(name) %> (Componente)', () => {
+  let component: <%= classify(name) %>;
+  let fixture: ComponentFixture<<%= classify(name) %>>;
+  let headerService: HeaderService;
+
+  beforeEach(async () => {
+    const headerServiceMock = {
+      setTitle: vi.fn(),
+      setShowBackButton: vi.fn(),
+      title: signal('<%= label %>'),
+      showBackButton: signal(true),
+    };
+
+    await TestBed.configureTestingModule({
+      imports: [<%= classify(name) %>],
+      providers: [
+        provideRouter([]),
+        { provide: HeaderService, useValue: headerServiceMock },
+        providePrimeNG({ theme: { preset: Aura } }),
+      ],
+    })
+      .overrideComponent(<%= classify(name) %>, {
+        remove: { imports: [EvaluationForm] },
+        add: { imports: [MockEvaluationForm] },
+      })
+      .compileComponents();
+
+    fixture = TestBed.createComponent(<%= classify(name) %>);
+    component = fixture.componentInstance;
+    headerService = TestBed.inject(HeaderService);
+
+    await fixture.whenStable();
+    fixture.detectChanges();
+  });
+
+  it('deve ser criado com sucesso', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('deve configurar o título correto no HeaderService ao iniciar', () => {
+    expect(headerService.setTitle).toHaveBeenCalledWith('<%= label %>');
+  });
+
+  it('deve conter a configuração inicial correta da escala de <%= name %>', () => {
+    const config = component['<%= camelize(name) %>_config']();
+    expect(config.id).toBe('<%= dasherize(name) %>');
+    // Baseline padrão 0 (ajustar conforme a escala se necessário)
+    expect(config.baseline).toBe(0);
+  });
+
+  it('deve passar a configuração e as perguntas para o app-evaluation-form', () => {
+    const evaluationFormEl = fixture.debugElement.query(By.directive(MockEvaluationForm));
+    const childInstance = evaluationFormEl.componentInstance;
+
+    expect(childInstance.config()).toEqual(component['<%= camelize(name) %>_config']());
+    expect(childInstance.questions()).toEqual(component['<%= camelize(name) %>_questions']());
+  });
+
+  it('deve garantir que todas as perguntas tenham opções de resposta e valores coerentes', () => {
+    const questions = component['<%= camelize(name) %>_questions']();
+    expect(questions.length).toBeGreaterThan(0);
+
+    questions.forEach((question) => {
+      // Valida que existem opções (ajuste os valores esperados conforme a lógica da escala)
+      expect(question.options.length).toBeGreaterThan(0);
+      expect(question.options[0]).toHaveProperty('value');
+    });
+  });
+});

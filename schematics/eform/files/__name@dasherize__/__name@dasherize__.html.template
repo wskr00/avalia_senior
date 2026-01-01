@@ -1,0 +1,4 @@
+<app-evaluation-form 
+  [config]="<%= camelize(name) %>_config()" 
+  [questions]="<%= camelize(name) %>_questions()">
+</app-evaluation-form>

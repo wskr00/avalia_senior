@@ -1,0 +1,35 @@
+import { EvaluationForm } from '@/components/evaluation-form/evaluation-form';
+import { EvaluationQuestion, ScaleDefinition } from '@/interfaces/evaluation';
+import { HeaderService } from '@/services/header';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+
+@Component({
+  selector: 'app-<%= dasherize(name) %>',
+  standalone: true,
+  imports: [EvaluationForm],
+  templateUrl: './<%= dasherize(name) %>.html',
+  styleUrl: './<%= dasherize(name) %>.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class <%= classify(name) %> implements OnInit {
+  private headerService = inject(HeaderService);
+
+  protected <%= camelize(name) %>_config = signal<ScaleDefinition>({
+    id: '<%= dasherize(name) %>',
+    baseline: 0,
+    ranges: [
+      { min: 0, label: 'Exemplo' }
+    ],
+  });
+
+  protected <%= camelize(name) %>_questions = signal<EvaluationQuestion[]>([
+    {
+      title: 'Pergunta exemplo?',
+      options: [{ label: 'Sim', value: 0 }, { label: 'Não', value: 1 }],
+    }
+  ]);
+
+  ngOnInit(): void {
+    this.headerService.setTitle('<%= label %>');
+  }
+}

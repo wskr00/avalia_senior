@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "$id": "eform-schema",
+    "title": "Configuração do Gerador de Formulários",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Nome interno/técnico usado para arquivos, pastas e rotas (ex: lawton, katz).",
+            "x-prompt": "Qual o nome técnico da escala (ex: moca)?",
+            "pattern": "^[a-zA-Z][a-zA-Z0-9-]*$"
+        },
+        "label": {
+            "type": "string",
+            "description": "Nome de exibição para o usuário (ex: Escala de Lawton). Se omitido, usará o nome técnico.",
+            "x-prompt": "Qual o título que o usuário verá no botão e cabeçalho? (Deixe vazio para usar o nome técnico)"
+        }
+    },
+    "required": [
+        "name"
+    ]
+}

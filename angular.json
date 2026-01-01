@@ -3,7 +3,11 @@
   "version": 1,
   "cli": {
     "packageManager": "npm",
-    "analytics": "4c0c1008-2f6e-469b-9be5-9778775a1fb1"
+    "analytics": "4c0c1008-2f6e-469b-9be5-9778775a1fb1",
+    "schematicCollections": [
+      "./dist/schematics/collection.json",
+      "@schematics/angular"
+    ]
   },
   "newProjectRoot": "projects",
   "projects": {

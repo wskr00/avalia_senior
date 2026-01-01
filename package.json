@@ -7,7 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "npm run build:schematics",
+    "build:schematics": "tsc -p schematics/tsconfig.schematics.json && npm run postbuild:schematics",
+    "postbuild:schematics": "copyfiles -u 1 \"schematics/**/*.json\" \"schematics/**/files/**/*\" dist/schematics"
   },
   "prettier": {
     "printWidth": 100,
@@ -46,12 +49,16 @@
   },
   "devDependencies": {
     "@analogjs/vite-plugin-angular": "^2.2.0",
+    "@angular-devkit/core": "^21.0.4",
+    "@angular-devkit/schematics": "^21.0.4",
+    "@angular-devkit/schematics-cli": "^21.0.4",
     "@angular/build": "^21.0.0",
     "@angular/cli": "^21.0.0",
     "@angular/compiler-cli": "^21.0.0",
     "@playwright/test": "1.57.0",
     "@types/node": "^25.0.3",
     "@vitest/browser-playwright": "^4.0.16",
+    "copyfiles": "^2.4.1",
     "jsdom": "^27.4.0",
     "playwright-ng-schematics": "^21.0.3",
     "typescript": "~5.9.2",

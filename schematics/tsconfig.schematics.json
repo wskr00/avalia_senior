@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "../dist/schematics",
+    "rootDir": ".",
+    "lib": ["es2021", "dom"],
+    "target": "es2021",
+    "types": ["node"],
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "esModuleInterop": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": [
+    "**/*.spec.ts", 
+    "files/**/*", 
+    "**/files/**/*"
+  ]
+}
