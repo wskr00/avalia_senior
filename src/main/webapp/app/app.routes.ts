@@ -15,4 +15,5 @@ export const routes: Routes = [
   { path: 'meem', component: Meem },
   { path: 'tinetti', component: Tinetti },
   { path: 'sussurro', component: Sussurro },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
