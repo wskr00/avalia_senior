@@ -58,6 +58,7 @@ describe('Home (Componente)', () => {
           { path: 'lawton', component: class {} },
           { path: 'katz', component: class {} },
           { path: 'gds', component: class {} },
+          { path: 'meem', component: class {} },
         ]),
         providePrimeNG({ theme: { preset: Aura } }),
       ],
@@ -125,6 +126,21 @@ describe('Home (Componente)', () => {
     expect(await gdsBtn?.getRouterLink()).toBe('/gds');
   });
 
+  it('deve ter o link correto para a Mini Exame do Estado Mental', async () => {
+    const buttons = await loader.getAllHarnesses(PrimeButtonHarness);
+
+    let targetBtn;
+    for (const btn of buttons) {
+      if ((await btn.getLabel()) === 'Mini Exame do Estado Mental') {
+        targetBtn = btn;
+        break;
+      }
+    }
+
+    expect(targetBtn).toBeDefined();
+    expect(await targetBtn?.getRouterLink()).toBe('/meem');
+  });
+
   it('deve ter aria-labels descritivos em todos os botões de escala', async () => {
     const buttons = await loader.getAllHarnesses(PrimeButtonHarness);
 
@@ -132,6 +148,7 @@ describe('Home (Componente)', () => {
       'Acessar Escala de Lawton',
       'Acessar Índice de Katz',
       'Acessar Escala de Depressão Geriátrica',
+      'Acessar Mini Exame do Estado Mental',
     ];
 
     for (let i = 0; i < buttons.length; i++) {

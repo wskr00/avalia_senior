@@ -5,7 +5,6 @@ import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@ang
 
 @Component({
   selector: 'app-<%= dasherize(name) %>',
-  standalone: true,
   imports: [EvaluationForm],
   templateUrl: './<%= dasherize(name) %>.html',
   styleUrl: './<%= dasherize(name) %>.scss',

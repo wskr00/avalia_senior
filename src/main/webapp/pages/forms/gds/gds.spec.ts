@@ -11,7 +11,6 @@ import { Gds } from './gds';
 
 @Component({
   selector: 'app-evaluation-form',
-  standalone: true,
   template: '<div>Mock Evaluation Form</div>',
 })
 class MockEvaluationForm {
